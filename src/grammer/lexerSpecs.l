@@ -1,6 +1,7 @@
 %{
 #include <stdlib.h>
 #include <string>
+#include "parser.h"
 #include "parser.hpp"
 void yyerror(std::string s);
 %}
