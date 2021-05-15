@@ -4,4 +4,11 @@
 #include "node.h"
 #include "expressionNode.h"
 
+#include "expressions/unaryOpNode.h"
+#include "expressions/binaryOpNode.h"
+#include "expressions/constantNode.h"
+#include "expressions/identifierNode.h"
+
+#include "branches/ifNode.h"
+
 #endif
