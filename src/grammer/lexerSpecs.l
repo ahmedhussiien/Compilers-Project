@@ -16,6 +16,9 @@ void yyerror(std::string s);
 "or"            return OR;
 "not"           return NOT;
 
+"if"            return IF;
+"else"          return ELSE;
+
 "int"           return TYPE_INT;
 "const"         return CONST;
 
