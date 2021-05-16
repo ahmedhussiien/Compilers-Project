@@ -16,11 +16,21 @@ void yyerror(std::string s);
 "or"            return OR;
 "not"           return NOT;
 
+"string"        return TYPE_STRING;
+"int"           return TYPE_INT;
+"float"         return TYPE_FLOAT;
+"bool"          return TYPE_BOOL;
+"void"          return TYPE_VOID;
+"const"         return CONST;
+
 "if"            return IF;
 "else"          return ELSE;
 
 "int"           return TYPE_INT;
 "const"         return CONST;
+
+"print"         return PRINT;
+
 
 [a-zA-Z_][a-zA-Z0-9_]*      { 
                                 yylval.identifierName = strdup(yytext);
