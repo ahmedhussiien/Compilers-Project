@@ -23,6 +23,12 @@ void yyerror(std::string s);
 "void"          return TYPE_VOID;
 "const"         return CONST;
 
+"for"           return FOR;
+"while"         return WHILE;
+"do"            return DO;
+"continue"      return CONTINUE;
+"break"         return BREAK;
+
 "if"            return IF;
 "else"          return ELSE;
 

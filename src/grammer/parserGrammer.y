@@ -37,13 +37,15 @@ SymbolTable symbolTable;
 %type <valuePtr>            value
 %type <statementListPtr>    stmt_list 
 %type <datatype>            variable_type
+%type <declarationPtr>      variable_declaration
+
 
 // Data types
 %token TYPE_INT TYPE_FLOAT TYPE_STRING TYPE_BOOL
 %token CONST
 
 // Loops
-%token WHILE
+%token WHILE FOR DO CONTINUE BREAK
 
 // Branches
 %token IF SWITCH CASE
@@ -90,6 +92,7 @@ stmt:
 loop_stmt:
         WHILE '(' expr ')' stmt                 { $$ = new WhileLoopNode($3, $5); }
     |   DO stmt WHILE '(' expr ')'              { $$ = new DoWhileLoopNode($5, $2); }
+    |   FOR '(' stmt stmt stmt ')' stmt         { $$ = new ForLoopNode($3, $4, $5, $7); }
     ;
 
 branch_stmt:
