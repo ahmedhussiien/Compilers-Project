@@ -77,6 +77,7 @@ stmt_list:
 
 stmt:
         expr ';'                    { $$ = $1; }
+    |   variable_declaration ';'    { $$ = $1; }
     |   branch_stmt                 { $$ = $1; }
     |   PRINT expr ';'              { $$ = new PrintNode($2); }
     |   '{' stmt_list '}'           { $$ = $2; }
@@ -87,6 +88,12 @@ branch_stmt:
     |   IF '(' expr ')' stmt ELSE stmt          { $$ = new IfNode($3, $5, $7); }
     ;
 
+variable_declaration:
+        variable_type VARIABLE                   { $$ = new DeclarationNode(&symbolTable, $2, $1); }
+    |   variable_type VARIABLE '=' expr          { $$ = new DeclarationNode(&symbolTable, $2, $1, $4);}
+    |   CONST variable_type VARIABLE '=' expr    { $$ = new DeclarationNode(&symbolTable, $3, $2, $5, true); }
+    ;
+    
 expr:
         value                           { $$ = $1 ; }
     |   VARIABLE                        { $$ = new IdentifierNode(&symbolTable, $1); }
