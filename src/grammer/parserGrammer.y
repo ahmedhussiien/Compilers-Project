@@ -89,6 +89,7 @@ stmt:
 
 loop_stmt:
         WHILE '(' expr ')' stmt                 { $$ = new WhileLoopNode($3, $5); }
+    |   DO stmt WHILE '(' expr ')'              { $$ = new DoWhileLoopNode($5, $2); }
     ;
 
 branch_stmt:

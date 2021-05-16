@@ -11,6 +11,7 @@
 
 #include "branches/ifNode.h"
 
+#include "loops/doWhileLoopNode.h"
 #include "loops/WhileLoopNode.h"
 
 #include "functions/print.h"
