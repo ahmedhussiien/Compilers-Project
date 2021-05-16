@@ -32,7 +32,7 @@ SymbolTable symbolTable;
 %token <floatValue>     FLOAT
 %token <boolValue>      BOOL
 
-%type <nPtr>                stmt branch_stmt program
+%type <nPtr>                stmt branch_stmt loop_stmt program
 %type <exprPtr>             expr
 %type <valuePtr>            value
 %type <statementListPtr>    stmt_list 
@@ -41,6 +41,9 @@ SymbolTable symbolTable;
 // Data types
 %token TYPE_INT TYPE_FLOAT TYPE_STRING TYPE_BOOL
 %token CONST
+
+// Loops
+%token WHILE
 
 // Branches
 %token IF SWITCH CASE
@@ -78,9 +81,14 @@ stmt_list:
 stmt:
         expr ';'                    { $$ = $1; }
     |   variable_declaration ';'    { $$ = $1; }
+    |   loop_stmt                   { $$ = $1; }
     |   branch_stmt                 { $$ = $1; }
     |   PRINT expr ';'              { $$ = new PrintNode($2); }
     |   '{' stmt_list '}'           { $$ = $2; }
+    ;
+
+loop_stmt:
+        WHILE '(' expr ')' stmt                 { $$ = new WhileLoopNode($3, $5); }
     ;
 
 branch_stmt:
