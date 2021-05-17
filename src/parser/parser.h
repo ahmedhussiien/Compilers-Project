@@ -16,5 +16,10 @@
 #include "loops/forLoopNode.h"
 
 #include "functions/print.h"
+#include "functions/returnNode.h"
+#include "functions/functionArgsNode.h"
+#include "functions/functionParamsNode.h"
+#include "functions/functionExecutionNode.h"
+#include "functions/functionDeclarationNode.h"
 
 #endif
