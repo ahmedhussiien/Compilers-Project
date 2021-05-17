@@ -31,10 +31,10 @@ void yyerror(std::string s);
 
 "if"            return IF;
 "else"          return ELSE;
+"switch"        return SWITCH;
+"case"          return CASE;
 
-"int"           return TYPE_INT;
-"const"         return CONST;
-
+"return"        return RETURN;
 "print"         return PRINT;
 
 
@@ -46,6 +46,11 @@ void yyerror(std::string s);
 [0-9]+              {
                         yylval.intValue = atoi(yytext);
                         return INTEGER;
+                    }
+
+[0-9]+[.][0-9]+     {
+                        yylval.floatValue = atof(yytext);
+                        return FLOAT;
                     }
 
 [-()<>=+*/;:{}.,]   {

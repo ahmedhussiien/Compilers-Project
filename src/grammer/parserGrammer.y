@@ -24,13 +24,19 @@ SymbolTable symbolTable;
     Node *nPtr;
     ConstantNode* valuePtr;
     ExpressionNode* exprPtr;
+    DeclarationNode* declarationPtr;
+    StatementsListNode* statementListPtr;
+
+    FunctionArgsNode* funcArgsPtr;
+    FunctionParamsNode* funcParamsPtr;
+    FunctionDeclarationNode* funcDeclarationPtr;
 };
 
-%token <identifierName> VARIABLE
-%token <intValue>       INTEGER
-%token <stringValue>    STRING
-%token <floatValue>     FLOAT
-%token <boolValue>      BOOL
+%token <identifierName>     VARIABLE
+%token <intValue>           INTEGER
+%token <stringValue>        STRING
+%token <floatValue>         FLOAT
+%token <boolValue>          BOOL
 
 %type <nPtr>                stmt branch_stmt loop_stmt program
 %type <exprPtr>             expr
@@ -38,6 +44,11 @@ SymbolTable symbolTable;
 %type <statementListPtr>    stmt_list 
 %type <datatype>            variable_type
 %type <declarationPtr>      variable_declaration
+
+%type <funcArgsPtr>         function_args
+%type <funcParamsPtr>       function_params
+%type <declarationPtr>      variable_declaration
+%type <funcDeclarationPtr>  function_declaration_stmt
 
 
 // Data types
@@ -62,6 +73,9 @@ SymbolTable symbolTable;
 // Standard functions
 %token PRINT
 
+// Reserved keywords
+%token RETURN
+
 %%
 program:
        program stmt        { execute($2); delete $2; }
@@ -83,9 +97,11 @@ stmt_list:
 stmt:
         expr ';'                    { $$ = $1; }
     |   variable_declaration ';'    { $$ = $1; }
+    |   function_declaration_stmt   { $$ = $1; }
     |   loop_stmt                   { $$ = $1; }
     |   branch_stmt                 { $$ = $1; }
     |   PRINT expr ';'              { $$ = new PrintNode($2); }
+    |   RETURN expr ';'             { $$ = new ReturnNode($2);}
     |   '{' stmt_list '}'           { $$ = $2; }
     ;
 
@@ -98,6 +114,40 @@ loop_stmt:
 branch_stmt:
         IF '(' expr ')' stmt %prec IFX          { $$ = new IfNode($3, $5, nullptr); }
     |   IF '(' expr ')' stmt ELSE stmt          { $$ = new IfNode($3, $5, $7); }
+    ;
+
+
+function_declaration_stmt:
+        variable_type VARIABLE '(' function_params ')' stmt      { $$ = new FunctionDeclarationNode(&symbolTable, $2, $1, $4, $6); }
+    ;
+
+
+function_params:
+                                                        {   $$ = new FunctionParamsNode(); } 
+
+    |   variable_declaration                            {
+                                                            $$ = new FunctionParamsNode();
+                                                            $$->addParam($1);
+                                                        }
+
+    |   function_params ',' variable_declaration        { 
+                                                            $$ = $1;
+                                                            $$->addParam($3); 
+                                                        }       
+    ;
+
+function_args:
+                                { $$ = new FunctionArgsNode(); } 
+
+    |   expr                    { 
+                                    $$ = new FunctionArgsNode();
+                                    $$->addArg($1);
+                                }
+
+    |   function_args ',' expr  { 
+                                    $$ = $1;
+                                    $$->addArg($3);
+                                }
     ;
 
 variable_declaration:
@@ -123,6 +173,7 @@ expr:
     |   expr AND expr                   { $$ = new BinaryOpNode(OP_AND, $1, $3); }
     |   expr OR expr                    { $$ = new BinaryOpNode(OP_OR, $1, $3); }
     |   NOT expr                        { $$ = new UnaryOpNode(OP_NOT, $2); }
+    |   VARIABLE '(' function_args ')'  { $$ = new FunctionExecutionNode($1, $3, &symbolTable);}
     |   '(' expr ')'                    { $$ = $2; }
     ;
 
