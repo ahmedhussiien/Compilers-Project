@@ -4,12 +4,18 @@
 #include "node.h"
 #include "expressionNode.h"
 
+#include "statements/statementsListNode.h"
+#include "statements/assignmentNode.h"
+#include "statements/declarationNode.h"
+
 #include "expressions/unaryOpNode.h"
 #include "expressions/binaryOpNode.h"
 #include "expressions/constantNode.h"
 #include "expressions/identifierNode.h"
 
 #include "branches/ifNode.h"
+#include "branches/caseNode.h"
+#include "branches/switchCaseNode.h"
 
 #include "loops/doWhileLoopNode.h"
 #include "loops/WhileLoopNode.h"

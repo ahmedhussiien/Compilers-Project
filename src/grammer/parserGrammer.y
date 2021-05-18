@@ -30,6 +30,9 @@ SymbolTable symbolTable;
     FunctionArgsNode* funcArgsPtr;
     FunctionParamsNode* funcParamsPtr;
     FunctionDeclarationNode* funcDeclarationPtr;
+
+    SwitchCaseNode* switchCasePtr;
+    CaseNode* casePtr;
 };
 
 %token <identifierName>     VARIABLE
@@ -40,14 +43,15 @@ SymbolTable symbolTable;
 
 %type <nPtr>                stmt branch_stmt loop_stmt program
 %type <exprPtr>             expr
+%type <casePtr>             case_stmt
 %type <valuePtr>            value
-%type <statementListPtr>    stmt_list 
 %type <datatype>            variable_type
+%type <switchCasePtr>       switch_stmt case_stmt_list
+%type <statementListPtr>    stmt_list 
 %type <declarationPtr>      variable_declaration
 
 %type <funcArgsPtr>         function_args
 %type <funcParamsPtr>       function_params
-%type <declarationPtr>      variable_declaration
 %type <funcDeclarationPtr>  function_declaration_stmt
 
 
@@ -100,8 +104,10 @@ stmt:
     |   function_declaration_stmt   { $$ = $1; }
     |   loop_stmt                   { $$ = $1; }
     |   branch_stmt                 { $$ = $1; }
+    |   switch_stmt                 { $$ = $1 ;}
     |   PRINT expr ';'              { $$ = new PrintNode($2); }
     |   RETURN expr ';'             { $$ = new ReturnNode($2);}
+    |   VARIABLE '=' expr ';'       { $$ = new AssignmentNode(&symbolTable, $1, DTYPE_INT, $3); }
     |   '{' stmt_list '}'           { $$ = $2; }
     ;
 
@@ -116,6 +122,26 @@ branch_stmt:
     |   IF '(' expr ')' stmt ELSE stmt          { $$ = new IfNode($3, $5, $7); }
     ;
 
+
+switch_stmt:
+        SWITCH '(' expr ')' '{' case_stmt_list '}'             { $$ = $6; $$->setExpression($3); }
+    ;
+
+case_stmt_list:
+        case_stmt                   { 
+                                        $$ = new SwitchCaseNode(); 
+                                        $$->addCaseStatement($1); 
+                                    }
+
+    |   case_stmt_list case_stmt    {
+                                        $$ = $1;
+                                        $$->addCaseStatement($2)
+                                    }
+    ;
+
+case_stmt:
+        CASE expr ':' stmt            { $$ = new CaseNode($2, $4); }
+    ;
 
 function_declaration_stmt:
         variable_type VARIABLE '(' function_params ')' stmt      { $$ = new FunctionDeclarationNode(&symbolTable, $2, $1, $4, $6); }
