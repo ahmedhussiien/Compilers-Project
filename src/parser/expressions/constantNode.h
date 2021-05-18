@@ -3,10 +3,11 @@
 
 #include "expressionNode.h"
 #include "enums/dataType.h"
+#include "symbolTable/primitiveValue.h"
 
 class ConstantNode : public ExpressionNode
 {
-    int value;
+    PrimitiveValue *value;
 
 public:
     ConstantNode(int value);
