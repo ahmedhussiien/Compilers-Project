@@ -3,6 +3,7 @@
 #include <string>
 
 #include "enums/enums.h"
+#include "symbolTable/symbolTable.h"
 #include "symbolTable/primitiveValue.h"
 #include "parser/parser.h"
 
