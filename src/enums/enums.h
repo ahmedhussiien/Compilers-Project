@@ -4,5 +4,6 @@
 #include "binaryOperator.h"
 #include "unaryOperator.h"
 #include "dataType.h"
+#include "keyword.h"
 
 #endif

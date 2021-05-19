@@ -117,6 +117,8 @@ loop_stmt:
         WHILE '(' expr ')' stmt                 { $$ = new WhileLoopNode($3, $5); }
     |   DO stmt WHILE '(' expr ')'              { $$ = new DoWhileLoopNode($5, $2); }
     |   FOR '(' stmt stmt stmt ')' stmt         { $$ = new ForLoopNode($3, $4, $5, $7); }
+    |   BREAK ';'                               { $$ = new KeywordNode(KW_BREAK);}
+    |   CONTINUE ';'                            { $$ = new KeywordNode(KW_CONTINUE);}
     ;
 
 branch_stmt:
