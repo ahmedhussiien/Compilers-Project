@@ -58,7 +58,7 @@ SymbolTable symbolTable;
 
 
 // Data types
-%token TYPE_INT TYPE_FLOAT TYPE_STRING TYPE_BOOL
+%token TYPE_INT TYPE_FLOAT TYPE_STRING TYPE_BOOL TYPE_VOID
 %token CONST
 
 // Loops

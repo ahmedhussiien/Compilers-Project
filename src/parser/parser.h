@@ -3,6 +3,7 @@
 
 #include "node.h"
 #include "expressionNode.h"
+#include "keywordNode.h"
 
 #include "statements/statementsListNode.h"
 #include "statements/assignmentNode.h"
