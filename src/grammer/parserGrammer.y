@@ -110,6 +110,8 @@ stmt:
     |   PRINT expr ';'              { $$ = new PrintNode($2); }
     |   RETURN expr ';'             { $$ = new ReturnNode($2);}
     |   VARIABLE '=' expr ';'       { $$ = new AssignmentNode(&symbolTable, $1, DTYPE_INT, $3); }
+    |   ';'                         { $$ = new StatementsListNode(); }
+    |   '{' '}'                     { $$ = new StatementsListNode(); }
     |   '{' stmt_list '}'           { $$ = $2; }
     ;
 
