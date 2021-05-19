@@ -8,6 +8,9 @@ void yyerror(std::string s);
 
 %%
 
+"//".*                       { /* SINGLE LINE COMMENT */ }
+[/][*]+([^*/][^*]*[*]+)+[/]  { /* MULTI LINE COMMENTS */ }
+
 ">="            return GE;
 "<="            return LE;
 "=="            return EQ;
