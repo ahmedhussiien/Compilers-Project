@@ -43,8 +43,8 @@ SymbolTable symbolTable;
 %token <floatValue>         FLOAT
 %token <boolValue>          BOOL
 
-%type <nPtr>                stmt branch_stmt loop_stmt program
-%type <exprPtr>             expr
+%type <nPtr>                stmt branch_stmt loop_stmt program variable_declaration_stmt
+%type <exprPtr>             expr standard_functions
 %type <casePtr>             case_stmt
 %type <valuePtr>            value
 %type <datatype>            variable_type
@@ -55,7 +55,6 @@ SymbolTable symbolTable;
 %type <funcArgsPtr>         function_args
 %type <funcParamsPtr>       function_params
 %type <funcDeclarationPtr>  function_declaration_stmt
-
 
 // Data types
 %token TYPE_INT TYPE_FLOAT TYPE_STRING TYPE_BOOL TYPE_VOID
@@ -70,8 +69,8 @@ SymbolTable symbolTable;
 %nonassoc ELSE
 
 // Operators
-%left INC DEC
 %left AND OR NOT
+%left INC DEC
 %left GE LE EQ NE '>' '<'
 %left '+' '-'
 %left '*' '/'
@@ -90,27 +89,23 @@ program:
     ;
 
 stmt_list:
-        stmt                        { 
-                                        $$ = new StatementsListNode();
-                                        $$->addStatement($1);
-                                    }
-
-    |   stmt_list stmt              {   
-                                        $$ = $1;
-                                        $$->addStatement($2);
-                                    }
-    ;
+    stmt { 
+        $$ = new StatementsListNode();
+        $$->addStatement($1);
+    }
+    | stmt_list stmt {   
+        $$ = $1;
+        $$->addStatement($2);
+    };
 
 stmt:
         expr ';'                    { $$ = $1; }
-    |   variable_declaration ';'    { $$ = $1; }
+    |   variable_declaration_stmt   { $$ = $1; }
     |   function_declaration_stmt   { $$ = $1; }
     |   loop_stmt                   { $$ = $1; }
     |   branch_stmt                 { $$ = $1; }
-    |   switch_stmt                 { $$ = $1 ;}
-    |   PRINT expr ';'              { $$ = new PrintNode($2); }
+    |   switch_stmt                 { $$ = $1; }
     |   RETURN expr ';'             { $$ = new ReturnNode($2);}
-    |   VARIABLE '=' expr ';'       { $$ = new AssignmentNode(&symbolTable, $1, DTYPE_INT, $3); }
     |   ';'                         { $$ = new StatementsListNode(); }
     |   '{' '}'                     { $$ = new StatementsListNode(); }
     |   '{' stmt_list '}'           { $$ = $2; }
@@ -118,8 +113,8 @@ stmt:
 
 loop_stmt:
         WHILE '(' expr ')' stmt                 { $$ = new WhileLoopNode($3, $5); }
+    |   FOR '(' stmt stmt expr ')' stmt         { $$ = new ForLoopNode($3, $4, $5, $7); }
     |   DO stmt WHILE '(' expr ')'              { $$ = new DoWhileLoopNode($5, $2); }
-    |   FOR '(' stmt stmt stmt ')' stmt         { $$ = new ForLoopNode($3, $4, $5, $7); }
     |   BREAK ';'                               { $$ = new KeywordNode(KW_BREAK);}
     |   CONTINUE ';'                            { $$ = new KeywordNode(KW_CONTINUE);}
     ;
@@ -129,21 +124,21 @@ branch_stmt:
     |   IF '(' expr ')' stmt ELSE stmt          { $$ = new IfNode($3, $5, $7); }
     ;
 
-
 switch_stmt:
-        SWITCH '(' expr ')' '{' case_stmt_list '}'             { $$ = $6; $$->setExpression($3); }
-    ;
+    SWITCH '(' expr ')' '{' case_stmt_list '}'  { 
+        $$ = $6; $$->setExpression($3); 
+    };
 
 case_stmt_list:
-        case_stmt                   { 
-                                        $$ = new SwitchCaseNode(); 
-                                        $$->addCaseStatement($1); 
-                                    }
-
-    |   case_stmt_list case_stmt    {
-                                        $$ = $1;
-                                        $$->addCaseStatement($2)
-                                    }
+    case_stmt { 
+        $$ = new SwitchCaseNode(); 
+        $$->addCaseStatement($1); 
+    }
+    |   
+    case_stmt_list case_stmt {
+        $$ = $1;
+        $$->addCaseStatement($2)
+    }
     ;
 
 case_stmt:
@@ -154,33 +149,34 @@ function_declaration_stmt:
         variable_type VARIABLE '(' function_params ')' stmt      { $$ = new FunctionDeclarationNode(&symbolTable, $2, $1, $4, $6); }
     ;
 
-
 function_params:
-                                                        {   $$ = new FunctionParamsNode(); } 
-
-    |   variable_declaration                            {
-                                                            $$ = new FunctionParamsNode();
-                                                            $$->addParam($1);
-                                                        }
-
-    |   function_params ',' variable_declaration        { 
-                                                            $$ = $1;
-                                                            $$->addParam($3); 
-                                                        }       
-    ;
+    /* NULL */ {   
+        $$ = new FunctionParamsNode(); 
+    } 
+    | variable_declaration {
+        $$ = new FunctionParamsNode();
+        $$->addParam($1);
+    }
+    | function_params ',' variable_declaration { 
+        $$ = $1;
+        $$->addParam($3); 
+    };
 
 function_args:
-                                { $$ = new FunctionArgsNode(); } 
+    /* NULL */ { 
+        $$ = new FunctionArgsNode(); 
+    } 
+    | expr { 
+        $$ = new FunctionArgsNode();
+        $$->addArg($1);
+    }
+    | function_args ',' expr  { 
+        $$ = $1;
+        $$->addArg($3);
+    };
 
-    |   expr                    { 
-                                    $$ = new FunctionArgsNode();
-                                    $$->addArg($1);
-                                }
-
-    |   function_args ',' expr  { 
-                                    $$ = $1;
-                                    $$->addArg($3);
-                                }
+variable_declaration_stmt:
+        variable_declaration ';'    { $$ = $1; }
     ;
 
 variable_declaration:
@@ -192,6 +188,7 @@ variable_declaration:
 expr:
         value                           { $$ = $1 ; }
     |   VARIABLE                        { $$ = new IdentifierNode(&symbolTable, $1); }
+    |   NOT expr                        { $$ = new UnaryOpNode(OP_NOT, $2); }
     |   '-' expr %prec UMINUS           { $$ = new UnaryOpNode(OP_UMINUS, $2); }
     |   expr '+' expr                   { $$ = new BinaryOpNode(OP_PLUS, $1, $3); }
     |   expr '-' expr                   { $$ = new BinaryOpNode(OP_MINUS, $1, $3); }
@@ -205,9 +202,14 @@ expr:
     |   expr EQ expr                    { $$ = new BinaryOpNode(OP_EQ, $1, $3); }
     |   expr AND expr                   { $$ = new BinaryOpNode(OP_AND, $1, $3); }
     |   expr OR expr                    { $$ = new BinaryOpNode(OP_OR, $1, $3); }
-    |   NOT expr                        { $$ = new UnaryOpNode(OP_NOT, $2); }
+    |   VARIABLE '=' expr               { $$ = new AssignmentNode(&symbolTable, $1, DTYPE_INT, $3); }
     |   VARIABLE '(' function_args ')'  { $$ = new FunctionExecutionNode($1, $3, &symbolTable);}
+    |   standard_functions              { $$ = $1; }
     |   '(' expr ')'                    { $$ = $2; }
+    ;
+
+standard_functions:
+        PRINT '(' expr ')'      { $$ = new PrintNode($3); }
     ;
 
 variable_type:

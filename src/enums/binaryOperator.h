@@ -14,7 +14,9 @@ enum BinaryOperator
     OP_NE,
     OP_EQ,
     OP_AND,
-    OP_OR
+    OP_OR,
+    OP_INC,
+    OP_DEC
 };
 
 #endif

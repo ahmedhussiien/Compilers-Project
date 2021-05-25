@@ -6,13 +6,14 @@
 #include "keywordNode.h"
 
 #include "statements/statementsListNode.h"
-#include "statements/assignmentNode.h"
 #include "statements/declarationNode.h"
 
 #include "expressions/unaryOpNode.h"
 #include "expressions/binaryOpNode.h"
 #include "expressions/constantNode.h"
 #include "expressions/identifierNode.h"
+#include "expressions/assignmentNode.h"
+#include "expressions/print.h"
 
 #include "branches/ifNode.h"
 #include "branches/caseNode.h"
@@ -22,7 +23,6 @@
 #include "loops/WhileLoopNode.h"
 #include "loops/forLoopNode.h"
 
-#include "functions/print.h"
 #include "functions/returnNode.h"
 #include "functions/functionArgsNode.h"
 #include "functions/functionParamsNode.h"

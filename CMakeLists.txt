@@ -9,8 +9,9 @@ set(PARSER_SOURCES
     src/parser/expressions/constantNode.cpp
     src/parser/expressions/identifierNode.cpp
     src/parser/expressions/unaryOpNode.cpp
-
-    src/parser/statements/assignmentNode.cpp
+    src/parser/expressions/assignmentNode.cpp
+    src/parser/expressions/print.cpp
+    
     src/parser/statements/declarationNode.cpp
     src/parser/statements/statementsListNode.cpp
 
@@ -22,7 +23,6 @@ set(PARSER_SOURCES
     src/parser/loops/doWhileLoopNode.cpp
     src/parser/loops/whileLoopNode.cpp
     
-    src/parser/functions/print.cpp
     src/parser/functions/returnNode.cpp
     src/parser/functions/functionArgsNode.cpp
     src/parser/functions/functionParamsNode.cpp
