@@ -70,6 +70,7 @@ SymbolTable symbolTable;
 %nonassoc ELSE
 
 // Operators
+%left INC DEC
 %left AND OR NOT
 %left GE LE EQ NE '>' '<'
 %left '+' '-'

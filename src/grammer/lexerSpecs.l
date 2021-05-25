@@ -15,6 +15,8 @@ void yyerror(std::string s);
 "<="            return LE;
 "=="            return EQ;
 "!="            return NE;
+"++"            return INC;
+"--"            return DEC;
 "and"           return AND;
 "or"            return OR;
 "not"           return NOT;
@@ -41,6 +43,16 @@ void yyerror(std::string s);
 "print"         return PRINT;
 
 
+"true"              {
+                        yylval.boolValue = true;
+                        return BOOL;
+                    }
+
+"false"             {
+                        yylval.boolValue = false;
+                        return BOOL;
+                    }
+                
 [a-zA-Z_][a-zA-Z0-9_]*      { 
                                 yylval.identifierName = strdup(yytext);
                                 return VARIABLE;
@@ -54,6 +66,11 @@ void yyerror(std::string s);
 [0-9]+[.][0-9]+     {
                         yylval.floatValue = atof(yytext);
                         return FLOAT;
+                    }
+
+\"([^\"]*)\"        {
+                        yylval.stringValue = strdup(yytext);
+                        return STRING;
                     }
 
 [-()<>=+*/;:{}.,]   {
