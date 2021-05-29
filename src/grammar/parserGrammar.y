@@ -74,6 +74,7 @@ SymbolTable symbolTable;
 %left GE LE EQ NE '>' '<'
 %left '+' '-'
 %left '*' '/'
+%left '='
 %nonassoc UMINUS
 
 // Standard functions
