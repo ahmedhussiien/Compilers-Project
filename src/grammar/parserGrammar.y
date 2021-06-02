@@ -69,12 +69,12 @@ SymbolTable symbolTable;
 %nonassoc ELSE
 
 // Operators
+%right '='
 %left AND OR NOT
 %left INC DEC
 %left GE LE EQ NE '>' '<'
 %left '+' '-'
 %left '*' '/'
-%left '='
 %nonassoc UMINUS
 
 // Standard functions
