@@ -12,8 +12,16 @@ void yyerror(std::string s)
 
 void execute(Node *program)
 {
-    program->execute();
+    if (yyout == stdout) // if in interpreter mode, execute nodes right away.
+    {
+        program->execute();
+    }
+    else // if in compiler mode, don't execute just compile.
+    {
+        program->compile();
+    }
 }
+
 // Checks if the file can be opened and sets the input source of yylex to the file
 void setInputSource(char *fname)
 {

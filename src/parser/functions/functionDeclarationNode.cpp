@@ -5,10 +5,10 @@ FunctionDeclarationNode::FunctionDeclarationNode(SymbolTable *symbolTable, char 
     : Node(), symbolTable(symbolTable), name(name), returnType(returnType),
       params(params), statements(statements)
 {
+  symbolTable->declareFunction(name, returnType, params, statements);
 }
 
 int FunctionDeclarationNode::execute()
 {
-  symbolTable->declareFunction(name, returnType, params, statements);
   return 1;
 }

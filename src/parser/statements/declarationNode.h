@@ -36,6 +36,8 @@ public:
 
     virtual int execute();
 
+    virtual void compile();
+
     ~DeclarationNode();
 };
 
