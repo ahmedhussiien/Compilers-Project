@@ -1,88 +1,118 @@
 %{
 #include <stdlib.h>
+#include<iostream>
 #include <string>
 #include "parser.h"
 #include "parser.hpp"
-void yyerror(std::string s);
+
+int nextColumn = 1;
+int column = 1;
+
+void yyerror(const char *str);
+
+void incrementCursor() {
+    column = nextColumn; 
+    nextColumn += strlen(yytext);
+}
+
+void incrementCursor(char *str){
+    column = nextColumn;
+
+    for(char* i = str; *i != '\0'; i++) {
+        if(*i == '\n')
+            nextColumn = 1;
+        else
+            nextColumn++;
+    }
+}
+
 %}
+
+%option yylineno
 
 %%
 
-"//".*                       { /* SINGLE LINE COMMENT */ }
-[/][*]+([^*/][^*]*[*]+)+[/]  { /* MULTI LINE COMMENTS */ }
+"//".*                       { incrementCursor(); } /* SINGLE LINE COMMENT */
 
-">="            return GE;
-"<="            return LE;
-"=="            return EQ;
-"!="            return NE;
-"++"            return INC;
-"--"            return DEC;
-"and"           return AND;
-"or"            return OR;
-"not"           return NOT;
+[/][*]+([^*/][^*]*[*]+)+[/]  { incrementCursor(yytext); } /* MULTI LINE COMMENTS */
 
-"string"        return TYPE_STRING;
-"int"           return TYPE_INT;
-"float"         return TYPE_FLOAT;
-"bool"          return TYPE_BOOL;
-"void"          return TYPE_VOID;
-"const"         return CONST;
+">="            { incrementCursor(); return GE; }
+"<="            { incrementCursor(); return LE; }
+"=="            { incrementCursor(); return EQ; }
+"!="            { incrementCursor(); return NE; }
+"++"            { incrementCursor(); return INC; }
+"--"            { incrementCursor(); return DEC; }
+"and"           { incrementCursor(); return AND; }
+"or"            { incrementCursor(); return OR; }
+"not"           { incrementCursor(); return NOT; }
 
-"for"           return FOR;
-"while"         return WHILE;
-"do"            return DO;
-"continue"      return CONTINUE;
-"break"         return BREAK;
+"string"        { incrementCursor(); return TYPE_STRING; }
+"int"           { incrementCursor(); return TYPE_INT; }
+"float"         { incrementCursor(); return TYPE_FLOAT; }
+"bool"          { incrementCursor(); return TYPE_BOOL; }
+"void"          { incrementCursor(); return TYPE_VOID; }
+"const"         { incrementCursor(); return CONST; }
 
-"if"            return IF;
-"else"          return ELSE;
-"switch"        return SWITCH;
-"case"          return CASE;
+"for"           { incrementCursor(); return FOR; }
+"while"         { incrementCursor(); return WHILE; }
+"do"            { incrementCursor(); return DO; }
+"continue"      { incrementCursor(); return CONTINUE; }
+"break"         { incrementCursor(); return BREAK; }
 
-"return"        return RETURN;
-"print"         return PRINT;
+"if"            { incrementCursor(); return IF; }
+"else"          { incrementCursor(); return ELSE; }
+"switch"        { incrementCursor(); return SWITCH; }
+"case"          { incrementCursor(); return CASE; }
+
+"return"        { incrementCursor(); return RETURN; }
+"print"         { incrementCursor(); return PRINT; }
 
 
 "true"              {
+                        incrementCursor();
                         yylval.boolValue = true;
                         return BOOL;
                     }
 
 "false"             {
+                        incrementCursor();
                         yylval.boolValue = false;
                         return BOOL;
                     }
                 
 [a-zA-Z_][a-zA-Z0-9_]*      { 
+                                incrementCursor();
                                 yylval.identifierName = strdup(yytext);
                                 return VARIABLE;
                             }
 
 [0-9]+              {
+                        incrementCursor();
                         yylval.intValue = atoi(yytext);
                         return INTEGER;
                     }
 
 [0-9]+[.][0-9]+     {
+                        incrementCursor();
                         yylval.floatValue = atof(yytext);
                         return FLOAT;
                     }
 
 \"([^\"]*)\"        {
+                        incrementCursor();
                         yylval.stringValue = strdup(yytext);
                         return STRING;
                     }
 
-[-()<>=+*/;:{}.,]   {
-                        return *yytext;
-                    }
+[-()<>=+*/;:{}.,]   { incrementCursor(); return *yytext; }
 
 
-[ \t\n]+            ;       /* ignore whitespace */
+[ \t]+              { incrementCursor(); }
 
-.                   {
-                        yyerror("Unknown character");
-                    }
+[\n]+               { incrementCursor(); nextColumn = 1; } 
+
+.                   { incrementCursor(); yyerror("Unknown character");}
+
 %%
 
 int yywrap(void) {
