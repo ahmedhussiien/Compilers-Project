@@ -3,6 +3,8 @@
 
 #include "node.h"
 #include "expressionNode.h"
+#include <cstdio>
+extern FILE *yyout;
 
 class PrintNode : public ExpressionNode
 {
