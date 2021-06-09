@@ -3,6 +3,7 @@
 
 #include <cstdio>
 extern FILE *yyout;
+
 class Node
 {
 
