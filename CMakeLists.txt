@@ -27,7 +27,9 @@ set(PARSER_SOURCES
     src/parser/functions/functionArgsNode.cpp
     src/parser/functions/functionParamsNode.cpp
     src/parser/functions/functionExecutionNode.cpp
-    src/parser/functions/functionDeclarationNode.cpp)
+    src/parser/functions/functionDeclarationNode.cpp
+
+    src/parser/error/error.cpp)
 
 # A variable with all the symbol table files
 set(SYMBOL_TABLE_SOURCES
