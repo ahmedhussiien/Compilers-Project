@@ -111,6 +111,8 @@ void DeclarationNode::compile()
 
 void DeclarationNode::semanticCheck()
 {
+    if (type == DTYPE_VOID)
+        yyerror("Incomplete type is not allowed.");
     if (exprNode)
     {
         if (exprNode->getType() != type)
