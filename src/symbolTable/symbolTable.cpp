@@ -18,7 +18,7 @@ void SymbolTable::declareVariable(string identifier, DataType dataType,
                                   int value, bool isConst)
 {
     if (isDeclared(identifier))
-        return; // throw "Variable already declared!";
+        yyerror("Variable already declared.");
 
     PrimitiveSymbol *symbol = new PrimitiveSymbol(value, isConst, dataType);
 
@@ -30,7 +30,7 @@ void SymbolTable::declareFunction(string identifier, DataType returnType,
                                   Node *statements)
 {
     if (isDeclared(identifier))
-        return; // throw "Variable already declared!";
+        yyerror("Function already declared.");
 
     FunctionSymbol *symbol = new FunctionSymbol(returnType, params, statements);
     table[identifier] = symbol;
@@ -69,18 +69,18 @@ void SymbolTable::assignVariableValue(string identifier, DataType type,
 {
     auto it = table.find(identifier);
     if (it == table.end())
-        return; // throw "Undeclared variable!";
+        yyerror("Undeclared variable."); // throw "Undeclared variable!";
 
     PrimitiveSymbol *symbol = dynamic_cast<PrimitiveSymbol *>(it->second);
 
     if (!symbol)
-        return; // throw "Cannot assign value to function!";
+        yyerror("Cannot assign value to function."); // throw "Cannot assign value to function!";
 
     if (symbol->getIsConst())
-        return; // throw "Cannot assign value to constant!";
+        yyerror("Cannot reassign constant variable."); // throw "Cannot assign value to constant!";
 
     if (type != symbol->getDataType())
-        return; // throw "Type mismatch!";
+        yyerror("Type mismatch"); // throw "Type mismatch!";
 
     symbol->setValue(value);
 }
@@ -89,12 +89,26 @@ int SymbolTable::getVariableValue(string identifier) const
 {
     auto it = table.find(identifier);
     if (it == table.end())
-        return -1; // throw "Undeclared variable!";
+        yyerror("Undeclared variable."); // throw "Undeclared variable!";
 
     PrimitiveSymbol *symbol = dynamic_cast<PrimitiveSymbol *>(it->second);
 
     if (!symbol)
-        return -1; // throw "Cannot cast function to primitive symbol!";
+        yyerror("Cannot cast function to primitive symbol."); // throw "Cannot cast function to primitive symbol!";
 
     return symbol->getValue();
+}
+
+DataType SymbolTable::getVariableType(string identifier) const
+{
+    auto it = table.find(identifier);
+    if (it == table.end())
+        yyerror("Undeclared variable.");
+
+    PrimitiveSymbol *symbol = dynamic_cast<PrimitiveSymbol *>(it->second);
+
+    if (!symbol)
+        yyerror("Variable error.");
+
+    return symbol->getDataType();
 }

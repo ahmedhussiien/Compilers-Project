@@ -6,6 +6,7 @@ AssignmentNode::AssignmentNode(SymbolTable *symbolTable, char *name,
     : symbolTable(symbolTable), name(name), type(type),
       exprNode(exprNode)
 {
+    semanticCheck();
 }
 
 int AssignmentNode::execute()
@@ -15,6 +16,17 @@ int AssignmentNode::execute()
 
     symbolTable->assignVariableValue(name, type, exprNode->execute());
     return 1;
+}
+
+DataType AssignmentNode::getType()
+{
+    return type;
+}
+
+void AssignmentNode::semanticCheck()
+{
+    if (exprNode->getType() != type)
+        yyerror("Variable type mismatch.");
 }
 
 AssignmentNode::~AssignmentNode()

@@ -22,7 +22,8 @@ public:
                           SymbolTable *symbolTable);
 
     virtual int execute();
-
+    virtual void semanticCheck();
+    virtual DataType getType();
     ~FunctionExecutionNode();
 };
 

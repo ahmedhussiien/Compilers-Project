@@ -4,12 +4,16 @@
 extern int yylineno;
 extern int column;
 
+extern FILE *yyin;
+extern FILE *yyout;
+
 int yyparse();
 
 void yyerror(const char *str)
 {
     Error *err = new Error(str, yylineno, column);
     err->print();
+    exit(0);
 }
 
 void execute(Node *program)

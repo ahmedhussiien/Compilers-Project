@@ -22,7 +22,8 @@ public:
                    ExpressionNode *exprNode = nullptr);
 
     virtual int execute();
-
+    virtual DataType getType();
+    virtual void semanticCheck();
     ~AssignmentNode();
 };
 

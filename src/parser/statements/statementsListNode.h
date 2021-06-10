@@ -15,6 +15,7 @@ public:
 
     void addStatement(Node *statement);
     int execute();
+    vector<Node *> getStatements();
 
     ~StatementsListNode();
 };

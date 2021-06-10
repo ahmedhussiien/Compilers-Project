@@ -7,17 +7,20 @@ FunctionExecutionNode::FunctionExecutionNode(string identifier,
                                              FunctionArgsNode *argsNode,
                                              SymbolTable *symbolTable)
     : ExpressionNode(), identifier(identifier), argsNode(argsNode),
-      symbolTable(symbolTable) {}
+      symbolTable(symbolTable)
+{
+    semanticCheck();
+}
 
 int FunctionExecutionNode::execute()
 {
     if (!symbolTable)
-        return -1;
+        yyerror("Couldn't access symbol table.");
 
     FunctionSymbol *symbol = symbolTable->getFunctionSymbol(identifier);
 
     if (!symbol)
-        return -1;
+        yyerror("Undeclared function.");
 
     FunctionParamsNode *paramsNode = symbol->getParamsNode();
     vector<DeclarationNode *> params = paramsNode->getParams();
@@ -33,13 +36,49 @@ int FunctionExecutionNode::execute()
             declarationNode->setExpressionNode(expr);
 
         if (!declarationNode->getExpressionNode())
-            return -1; // throw "Missing arguments"
+            yyerror("Missing arguments in function call.");
 
         declarationNode->execute();
         delete declarationNode;
     }
 
     return symbol->getStatementsListNode()->execute();
+}
+
+void FunctionExecutionNode::semanticCheck()
+{
+    if (!symbolTable)
+        yyerror("Couldn't access symbol table.");
+
+    FunctionSymbol *symbol = symbolTable->getFunctionSymbol(identifier);
+
+    if (!symbol)
+        yyerror("Undeclared function.");
+
+    FunctionParamsNode *paramsNode = symbol->getParamsNode();
+    vector<DeclarationNode *> params = paramsNode->getParams(); // arguments in function declaration
+
+    if (params.size() != argsNode->getCount())
+        yyerror("Arguments mismatch.");
+
+    for (int i = 0; i < params.size(); i++)
+    {
+        if (params[i]->getDataType() != argsNode->getArg(i)->getType())
+            yyerror("Arguments mismatch.");
+    }
+}
+
+DataType FunctionExecutionNode::getType()
+{
+    if (!symbolTable)
+        yyerror("Function error.");
+
+    FunctionSymbol *symbol = symbolTable->getFunctionSymbol(identifier);
+
+    if (!symbol)
+        yyerror("Function not declared.");
+
+    return symbol->getReturnType();
 }
 
 FunctionExecutionNode::~FunctionExecutionNode()

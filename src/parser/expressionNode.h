@@ -8,6 +8,7 @@ class ExpressionNode : public Node
 
 public:
     virtual int execute() = 0;
+    virtual DataType getType() = 0;
     virtual ~ExpressionNode(){};
 };
 

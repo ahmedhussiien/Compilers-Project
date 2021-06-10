@@ -36,6 +36,8 @@ public:
     void assignVariableValue(string identifier, DataType type, int value);
 
     int getVariableValue(string identifier) const;
+
+    DataType getVariableType(string identifier) const;
 };
 
 #endif

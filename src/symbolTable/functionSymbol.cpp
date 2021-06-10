@@ -14,4 +14,9 @@ Node *FunctionSymbol::getStatementsListNode() const
     return statements;
 }
 
+DataType FunctionSymbol::getReturnType() const
+{
+    return returnType;
+}
+
 SymbolType FunctionSymbol::getType() { return FUNCTION; };

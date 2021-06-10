@@ -18,7 +18,7 @@ public:
 
     FunctionParamsNode *getParamsNode() const;
     Node *getStatementsListNode() const;
-
+    DataType getReturnType() const;
     virtual SymbolType getType();
 };
 
