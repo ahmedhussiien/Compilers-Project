@@ -22,6 +22,11 @@ int FunctionArgsNode::execute()
     return 0;
 }
 
+int FunctionArgsNode::getCount()
+{
+    return args.size();
+}
+
 FunctionArgsNode::~FunctionArgsNode()
 {
 }
