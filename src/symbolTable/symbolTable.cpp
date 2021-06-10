@@ -103,7 +103,7 @@ DataType SymbolTable::getVariableType(string identifier) const
 {
     auto it = table.find(identifier);
     if (it == table.end())
-        yyerror("Undeclared Variable.");
+        yyerror("Undeclared variable.");
 
     PrimitiveSymbol *symbol = dynamic_cast<PrimitiveSymbol *>(it->second);
 
