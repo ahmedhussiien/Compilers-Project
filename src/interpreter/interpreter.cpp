@@ -4,10 +4,12 @@
 int yyparse();
 extern FILE *yyin;
 extern FILE *yyout;
+extern int yylineno;
 
 void yyerror(std::string s)
 {
-    std::cout << s << "\n";
+    fprintf(stderr, "Error at line %d: %s\n", yylineno, s.c_str());
+    exit(0);
 }
 
 void execute(Node *program)

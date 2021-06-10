@@ -2,7 +2,9 @@
 #define __NODE_H_
 
 #include <cstdio>
+#include <string>
 extern FILE *yyout;
+void yyerror(std::string s);
 
 class Node
 {

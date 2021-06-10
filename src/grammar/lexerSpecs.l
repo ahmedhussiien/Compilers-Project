@@ -6,6 +6,8 @@
 void yyerror(std::string s);
 %}
 
+%option yylineno
+
 %%
 
 "//".*                       { /* SINGLE LINE COMMENT */ }
