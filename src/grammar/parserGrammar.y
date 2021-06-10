@@ -7,9 +7,11 @@
 #include "symbolTable/primitiveValue.h"
 #include "parser/parser.h"
 
+#define YYERROR_VERBOSE 1
+
 void execute(Node*);
 int yylex(void);
-void yyerror(std::string);
+void yyerror(const char *str);
 
 SymbolTable symbolTable;
 %}
