@@ -10,4 +10,6 @@ enum DataType
     DTYPE_VOID
 };
 
+static const char *DataTypeStr[] = {"int", "flaot", "bool", "string", "void"};
+
 #endif

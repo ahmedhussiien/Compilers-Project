@@ -12,7 +12,7 @@ class BinaryOpNode : public ExpressionNode
 public:
     BinaryOpNode(BinaryOperator op, ExpressionNode *n1, ExpressionNode *n2);
     virtual int execute();
-
+    virtual DataType getType();
     ~BinaryOpNode();
 };
 

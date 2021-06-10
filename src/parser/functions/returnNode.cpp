@@ -8,6 +8,11 @@ int ReturnNode::execute()
     return exprNode->execute();
 }
 
+DataType ReturnNode::getReturnType()
+{
+    return exprNode->getType();
+}
+
 ReturnNode::~ReturnNode()
 {
     delete exprNode;

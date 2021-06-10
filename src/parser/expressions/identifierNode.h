@@ -16,6 +16,7 @@ class IdentifierNode : public ExpressionNode
 public:
     IdentifierNode(SymbolTable *symbolTable, char *name);
     virtual int execute();
+    virtual DataType getType();
 };
 
 #endif

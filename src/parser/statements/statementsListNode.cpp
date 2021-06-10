@@ -18,6 +18,11 @@ int StatementsListNode::execute()
     return statements[statements.size() - 1]->execute();
 }
 
+vector<Node *> StatementsListNode::getStatements()
+{
+    return statements;
+}
+
 StatementsListNode::~StatementsListNode()
 {
     for (int i = 0; i < statements.size(); i++)

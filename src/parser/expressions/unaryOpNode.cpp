@@ -19,6 +19,11 @@ int UnaryOpNode::execute()
     }
 }
 
+DataType UnaryOpNode::getType()
+{
+    return n->getType();
+}
+
 UnaryOpNode::~UnaryOpNode()
 {
     delete n;

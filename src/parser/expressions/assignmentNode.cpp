@@ -17,6 +17,11 @@ int AssignmentNode::execute()
     return 1;
 }
 
+DataType AssignmentNode::getType()
+{
+    return type;
+}
+
 AssignmentNode::~AssignmentNode()
 {
     delete exprNode;

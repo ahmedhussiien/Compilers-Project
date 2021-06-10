@@ -4,3 +4,8 @@ IdentifierNode::IdentifierNode(SymbolTable *symbolTable, char *name)
     : ExpressionNode(), symbolTable(symbolTable), name(name) {}
 
 int IdentifierNode::execute() { return symbolTable->getVariableValue(name); }
+
+DataType IdentifierNode::getType()
+{
+    return symbolTable->getVariableType(name);
+}

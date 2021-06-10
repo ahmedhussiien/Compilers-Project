@@ -22,7 +22,7 @@ public:
                           SymbolTable *symbolTable);
 
     virtual int execute();
-
+    virtual DataType getType();
     ~FunctionExecutionNode();
 };
 

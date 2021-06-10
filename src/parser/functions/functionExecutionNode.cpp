@@ -42,6 +42,19 @@ int FunctionExecutionNode::execute()
     return symbol->getStatementsListNode()->execute();
 }
 
+DataType FunctionExecutionNode::getType()
+{
+    if (!symbolTable)
+        yyerror("Function error.");
+
+    FunctionSymbol *symbol = symbolTable->getFunctionSymbol(identifier);
+
+    if (!symbol)
+        yyerror("Function not declared.");
+
+    return symbol->getReturnType();
+}
+
 FunctionExecutionNode::~FunctionExecutionNode()
 {
     delete argsNode;

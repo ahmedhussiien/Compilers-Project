@@ -33,3 +33,8 @@ int ConstantNode::execute()
 {
     return value->value.intValue;
 }
+
+DataType ConstantNode::getType()
+{
+    return value->type;
+}

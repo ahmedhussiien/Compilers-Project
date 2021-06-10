@@ -16,6 +16,7 @@ public:
     ConstantNode(bool value);
 
     virtual int execute();
+    virtual DataType getType();
 };
 
 #endif

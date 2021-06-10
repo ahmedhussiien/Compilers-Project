@@ -11,6 +11,7 @@ class ReturnNode : public Node
 public:
     ReturnNode(ExpressionNode *exprNode);
     virtual int execute();
+    DataType getReturnType();
     ~ReturnNode();
 };
 

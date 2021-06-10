@@ -12,7 +12,7 @@ class UnaryOpNode : public ExpressionNode
 public:
     UnaryOpNode(UnaryOperator op, ExpressionNode *n);
     virtual int execute();
-
+    virtual DataType getType();
     ~UnaryOpNode();
 };
 

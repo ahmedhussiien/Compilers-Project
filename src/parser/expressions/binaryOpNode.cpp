@@ -51,6 +51,11 @@ int BinaryOpNode::execute()
     }
 }
 
+DataType BinaryOpNode::getType()
+{
+    return n1->getType();
+}
+
 BinaryOpNode::~BinaryOpNode()
 {
     delete n1;
