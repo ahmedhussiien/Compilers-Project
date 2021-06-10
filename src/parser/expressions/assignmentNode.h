@@ -23,6 +23,7 @@ public:
 
     virtual int execute();
     virtual DataType getType();
+    virtual void semanticCheck();
     ~AssignmentNode();
 };
 

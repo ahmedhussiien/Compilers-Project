@@ -13,6 +13,7 @@ class Node
 public:
     virtual int execute() = 0;
     virtual void compile(){};
+    virtual void semanticCheck(){};
     virtual ~Node(){};
 };
 

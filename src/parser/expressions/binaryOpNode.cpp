@@ -4,6 +4,7 @@
 BinaryOpNode::BinaryOpNode(BinaryOperator op, ExpressionNode *n1, ExpressionNode *n2)
     : ExpressionNode(), op(op), n1(n1), n2(n2)
 {
+    semanticCheck();
 }
 
 int BinaryOpNode::execute()
@@ -53,7 +54,33 @@ int BinaryOpNode::execute()
 
 DataType BinaryOpNode::getType()
 {
-    return n1->getType();
+    if (op == OP_PLUS || op == OP_MINUS || op == OP_MULTIPLY || op == OP_DIVIDE)
+    {
+        return n1->getType();
+    }
+    else
+        return DTYPE_BOOL;
+}
+
+void BinaryOpNode::semanticCheck()
+{
+    if (op == OP_PLUS || op == OP_MINUS || op == OP_MULTIPLY || op == OP_DIVIDE)
+    {
+        if (!isNumericOperands())
+            yyerror("Operands type mismatch.");
+    }
+    else
+    {
+        if (n1->getType() != n2->getType())
+            yyerror("Operands type mismatch.");
+    }
+}
+
+bool BinaryOpNode::isNumericOperands()
+{
+    DataType n1type = n1->getType();
+    DataType n2type = n2->getType();
+    return (n1type < 3) && (n2type < 3);
 }
 
 BinaryOpNode::~BinaryOpNode()

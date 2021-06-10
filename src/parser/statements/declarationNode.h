@@ -38,6 +38,8 @@ public:
 
     virtual void compile();
 
+    virtual void semanticCheck();
+
     ~DeclarationNode();
 };
 

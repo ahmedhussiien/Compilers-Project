@@ -2,6 +2,7 @@
 
 UnaryOpNode::UnaryOpNode(UnaryOperator op, ExpressionNode *n) : ExpressionNode(), op(op), n(n)
 {
+    semanticCheck();
 }
 
 int UnaryOpNode::execute()
@@ -22,6 +23,11 @@ int UnaryOpNode::execute()
 DataType UnaryOpNode::getType()
 {
     return n->getType();
+}
+
+void UnaryOpNode::semanticCheck()
+{
+    // there isn't really an implementation for this
 }
 
 UnaryOpNode::~UnaryOpNode()
