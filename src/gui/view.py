@@ -22,12 +22,12 @@ class View:
         # create text editing area
         self.text_area = ScrolledText(
             self.window, background='#1B1B1B',
-            foreground="white", insertbackground="white",
+            foreground="white", insertbackground="white", padx=20,
             undo=True, wrap="none")
         self.text_area.pack(fill="x")
 
         # add label to output text area
-        Label(text="OUTPUT", bg="#131313", anchor=W, pady=10,
+        Label(text="OUTPUT", bg="#131313", anchor=W, pady=10, padx=15,
               foreground="white").pack(fill="x")
 
         # add output text widget
@@ -38,7 +38,7 @@ class View:
 
         # create status bar
         self.status_bar = Label(
-            text="Open or create new file to start editing", foreground="white", anchor=E, bg='#0078CF', padx=20)
+            text="READY", foreground="white", anchor=E, bg='#0078CF', padx=20)
         self.status_bar.pack(fill="both", expand=True)
 
         # set shortcut bindings
@@ -48,6 +48,7 @@ class View:
         self.window.bind('<Control-n>', self.controller.new_file)
         self.window.bind('<Control-o>', self.controller.open_file)
         self.window.bind('<Control-s>', self.controller.save_file)
+        self.window.bind('<Control-6>', self.controller.compile)
 
     def start_ide(self):
         # run the main loop of the window (start the window)
@@ -59,6 +60,7 @@ class View:
                 "New (Ctrl + N)": self.controller.new_file,
                 "Open (Ctrl + O)": self.controller.open_file,
                 "Save (Ctrl + S)": self.controller.save_file,
+                "Compile (Ctrl + 6)": self.controller.compile,
                 "": None,
                 "Exit (Alt + f4)": self.window.quit
             },
@@ -128,3 +130,9 @@ class View:
 
     def save_file_dialog(self):
         return filedialog.asksaveasfilename(title="Save As", defaultextension=".txt", filetypes=[("Text Files", "*.txt")])
+
+    def set_output_text(self, content):
+        self.output_text_area.config(state=NORMAL)
+        self.output_text_area.delete(1.0, END)
+        self.output_text_area.insert(END, content)
+        self.output_text_area.config(state=DISABLED)

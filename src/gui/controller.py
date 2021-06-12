@@ -1,5 +1,7 @@
+from tkinter.constants import OUTSIDE
 from view import View
 from model import Model
+import subprocess
 
 
 class Controller:
@@ -38,8 +40,16 @@ class Controller:
                 self.model.save_file(file_content)
                 self.view.set_window_title(self.model.file_name)
             else:
-                return
+                return False
             self.view.set_status_text(file_path+"(Saved Successfully)")
+        return True
+
+    def compile(self, _=None):
+        if self.save_file():
+            output = subprocess.run(
+                ["interpreter.exe", self.model.file_path], capture_output=True)
+            output = output.stdout
+            self.view.set_output_text(output)
 
 
 controller = Controller()
