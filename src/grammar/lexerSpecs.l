@@ -8,7 +8,7 @@
 int nextColumn = 1;
 int column = 1;
 
-void yyerror(const char *str);
+void yyerror(const std::string);
 
 void incrementCursor() {
     column = nextColumn; 

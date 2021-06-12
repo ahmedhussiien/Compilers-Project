@@ -10,7 +10,7 @@ extern FILE *yyout;
 
 int yyparse();
 
-void yyerror(const char *str)
+void yyerror(const std::string str)
 {
     Error *err = new Error(str, yylineno, column);
     err->print();

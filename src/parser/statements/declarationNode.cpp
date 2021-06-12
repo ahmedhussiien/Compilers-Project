@@ -11,11 +11,11 @@ DeclarationNode::DeclarationNode(SymbolTable *symbolTable, char *name,
     semanticCheck();
     if (exprNode)
     {
-        symbolTable->declareVariable(name, type, exprNode->execute(), isConst);
+        symbolTable->declareVariable(name, type, exprNode->execute(), true, isConst);
     }
     else
     {
-        symbolTable->declareVariable(name, type, 0, isConst);
+        symbolTable->declareVariable(name, type, 0, false, isConst);
     }
 }
 
@@ -29,11 +29,11 @@ DeclarationNode::DeclarationNode(const DeclarationNode &node)
     semanticCheck();
     if (exprNode)
     {
-        symbolTable->declareVariable(name, type, exprNode->execute(), isConst);
+        symbolTable->declareVariable(name, type, exprNode->execute(), true, isConst);
     }
     else
     {
-        symbolTable->declareVariable(name, type, 0, isConst);
+        symbolTable->declareVariable(name, type, 0, false, isConst);
     }
 }
 

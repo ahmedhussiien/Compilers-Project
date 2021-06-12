@@ -11,7 +11,7 @@
 
 void execute(Node*);
 int yylex(void);
-void yyerror(const char *str);
+void yyerror(const std::string);
 
 SymbolTable symbolTable;
 %}

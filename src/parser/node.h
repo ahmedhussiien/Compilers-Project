@@ -5,7 +5,7 @@
 #include <string>
 #include "dataType.h"
 extern FILE *yyout;
-void yyerror(const char *str);
+void yyerror(const std::string str);
 
 class Node
 {

@@ -13,7 +13,6 @@ public:
     UnaryOpNode(UnaryOperator op, ExpressionNode *n);
     virtual int execute();
     virtual DataType getType();
-    virtual void semanticCheck();
     ~UnaryOpNode();
 };
 
