@@ -31,7 +31,7 @@ ConstantNode::ConstantNode(char value) : ExpressionNode()
 
 int ConstantNode::execute()
 {
-    return value->value.intValue;
+    return value->getIntValue();
 }
 
 DataType ConstantNode::getType()
