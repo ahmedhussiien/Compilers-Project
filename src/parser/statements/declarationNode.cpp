@@ -95,7 +95,7 @@ void DeclarationNode::compile()
         else
             fprintf(yyout, "%s\t%s\t0\n", name.c_str(), varType.c_str(), exprNode->execute());
         break;
-    case DTYPE_STRING:
+    case DTYPE_CHAR:
         // init string
         if (exprNode)
             fprintf(yyout, "%s\t%s\t%s\n", name.c_str(), varType.c_str(), exprNode->execute());

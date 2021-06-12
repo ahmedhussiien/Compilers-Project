@@ -46,7 +46,7 @@ void incrementCursor(char *str){
 "or"            { incrementCursor(); return OR; }
 "not"           { incrementCursor(); return NOT; }
 
-"string"        { incrementCursor(); return TYPE_STRING; }
+"char"          { incrementCursor(); return TYPE_CHAR; }
 "int"           { incrementCursor(); return TYPE_INT; }
 "float"         { incrementCursor(); return TYPE_FLOAT; }
 "bool"          { incrementCursor(); return TYPE_BOOL; }
@@ -98,10 +98,10 @@ void incrementCursor(char *str){
                         return FLOAT;
                     }
 
-\"([^\"]*)\"        {
+\'.\'               {
                         incrementCursor();
-                        yylval.stringValue = strdup(yytext);
-                        return STRING;
+                        yylval.charValue = yytext[1];
+                        return CHAR;
                     }
 
 [-()<>=+*/;:{}.,]   { incrementCursor(); return *yytext; }
