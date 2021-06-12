@@ -16,3 +16,5 @@ bool PrimitiveSymbol::getIsInitialized() const { return isInitialized; }
 DataType PrimitiveSymbol::getDataType() const { return dataType; }
 
 void PrimitiveSymbol::setValue(int value) { this->value = value; }
+
+void PrimitiveSymbol::setIsInitialized(bool value) { this->isInitialized = value; }

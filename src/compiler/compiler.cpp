@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 
 #include "parser/node.h"
 #include "parser/error/error.h"
@@ -9,18 +10,19 @@ extern int column;
 extern FILE *yyin;
 extern FILE *yyout;
 
+std::vector<Error *> errors;
+
 int yyparse();
 
 void yyerror(const std::string str)
 {
     Error *err = new Error(str, yylineno, column);
-    err->print();
-    exit(0);
+    errors.push_back(err);
 }
 
 void execute(Node *program)
 {
-    program->execute();
+    program->compile();
 }
 
 // Checks if the file can be opened and sets the input source of yylex to the file
@@ -44,6 +46,7 @@ void setOutputSource(char *fname)
         std::cout << "Error creating " << fname << "! Output set to terminal." << std::endl;
     }
     else
+        // set lex to write to it instead of defaulting to STDOUT:
         yyout = outputFile;
 }
 
@@ -60,5 +63,11 @@ int main(int argc, char *argv[])
     }
 
     yyparse();
+
+    for (int i = 0; i < errors.size(); i++)
+    {
+        errors[i]->print();
+    }
+
     return 0;
 }

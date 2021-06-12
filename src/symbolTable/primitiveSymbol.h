@@ -21,6 +21,7 @@ public:
     DataType getDataType() const;
 
     void setValue(int value);
+    void setIsInitialized(bool value);
 
     virtual SymbolType getType();
 };

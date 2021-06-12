@@ -82,6 +82,7 @@ void SymbolTable::assignVariableValue(string identifier, DataType type,
     if (type != symbol->getDataType())
         yyerror("Type mismatch");
 
+    symbol->setIsInitialized(true);
     symbol->setValue(value);
 }
 

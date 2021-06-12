@@ -56,13 +56,21 @@ include_directories(
 find_package(BISON)
 find_package(FLEX)
 
-# Generating the interpreter executable
+# Generating the executables
 BISON_TARGET(MyParser src/grammar/parserGrammar.y ${CMAKE_CURRENT_BINARY_DIR}/parser.cpp COMPILE_FLAGS -v)
 FLEX_TARGET(MyScanner src/grammar/lexerSpecs.l  ${CMAKE_CURRENT_BINARY_DIR}/lexer.cpp)
-ADD_FLEX_BISON_DEPENDENCY(MyScanner MyParser src/enums/enums.h src/parser/parser.h src/interpreter/interpreter.cpp)
+ADD_FLEX_BISON_DEPENDENCY(MyScanner MyParser src/enums/enums.h src/parser/parser.h)
 
 add_executable(interpreter
     src/interpreter/interpreter.cpp
+    ${BISON_MyParser_OUTPUTS}
+    ${FLEX_MyScanner_OUTPUTS}
+    ${PARSER_SOURCES} 
+    ${SYMBOL_TABLE_SOURCES}
+)
+
+add_executable(compiler
+    src/compiler/compiler.cpp
     ${BISON_MyParser_OUTPUTS}
     ${FLEX_MyScanner_OUTPUTS}
     ${PARSER_SOURCES} 
