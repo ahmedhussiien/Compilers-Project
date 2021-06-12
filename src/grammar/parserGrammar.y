@@ -11,7 +11,7 @@
 
 void execute(Node*);
 int yylex(void);
-void yyerror(const char *str);
+void yyerror(const std::string);
 
 SymbolTable symbolTable;
 %}
@@ -20,7 +20,7 @@ SymbolTable symbolTable;
     int intValue;
     float floatValue;
     bool boolValue;
-    char* stringValue;
+    char charValue;
 
     char* identifierName;
     DataType datatype; 
@@ -41,7 +41,7 @@ SymbolTable symbolTable;
 
 %token <identifierName>     VARIABLE
 %token <intValue>           INTEGER
-%token <stringValue>        STRING
+%token <charValue>          CHAR
 %token <floatValue>         FLOAT
 %token <boolValue>          BOOL
 
@@ -59,7 +59,7 @@ SymbolTable symbolTable;
 %type <funcDeclarationPtr>  function_declaration_stmt
 
 // Data types
-%token TYPE_INT TYPE_FLOAT TYPE_STRING TYPE_BOOL TYPE_VOID
+%token TYPE_INT TYPE_FLOAT TYPE_CHAR TYPE_BOOL TYPE_VOID
 %token CONST
 
 // Loops
@@ -219,7 +219,7 @@ variable_type:
         TYPE_INT        { $$ = DTYPE_INT ;}
     |   TYPE_FLOAT      { $$ = DTYPE_FLOAT ;}
     |   TYPE_BOOL       { $$ = DTYPE_BOOL ;}
-    |   TYPE_STRING     { $$ = DTYPE_STRING ;}
+    |   TYPE_CHAR     { $$ = DTYPE_CHAR ;}
     |   TYPE_VOID       { $$ = DTYPE_VOID ;}
     ;
 
@@ -227,7 +227,7 @@ value:
         INTEGER      { $$ = new ConstantNode($1); }
     |   FLOAT        { $$ = new ConstantNode($1); }
     |   BOOL         { $$ = new ConstantNode($1); }
-    |   STRING       { $$ = new ConstantNode($1); }
+    |   CHAR       { $$ = new ConstantNode($1); }
     ;
 
 %%

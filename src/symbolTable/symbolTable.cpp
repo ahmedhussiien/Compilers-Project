@@ -3,8 +3,8 @@
 
 #include "functionSymbol.h"
 #include "primitiveSymbol.h"
-#include "symbolTable.h"
 #include "symbol.h"
+#include "symbolTable.h"
 
 #include "enums/dataType.h"
 
@@ -15,12 +15,12 @@ bool SymbolTable::isDeclared(string identifier)
 }
 
 void SymbolTable::declareVariable(string identifier, DataType dataType,
-                                  int value, bool isConst)
+                                  int value, bool isInitialized, bool isConst)
 {
     if (isDeclared(identifier))
         yyerror("Variable already declared.");
 
-    PrimitiveSymbol *symbol = new PrimitiveSymbol(value, isConst, dataType);
+    PrimitiveSymbol *symbol = new PrimitiveSymbol(value, isInitialized, isConst, dataType);
 
     table[identifier] = symbol;
 }
@@ -69,18 +69,18 @@ void SymbolTable::assignVariableValue(string identifier, DataType type,
 {
     auto it = table.find(identifier);
     if (it == table.end())
-        yyerror("Undeclared variable."); // throw "Undeclared variable!";
+        yyerror("Undeclared variable.");
 
     PrimitiveSymbol *symbol = dynamic_cast<PrimitiveSymbol *>(it->second);
 
     if (!symbol)
-        yyerror("Cannot assign value to function."); // throw "Cannot assign value to function!";
+        yyerror("Cannot assign value to function.");
 
     if (symbol->getIsConst())
-        yyerror("Cannot reassign constant variable."); // throw "Cannot assign value to constant!";
+        yyerror("Cannot reassign constant variable.");
 
     if (type != symbol->getDataType())
-        yyerror("Type mismatch"); // throw "Type mismatch!";
+        yyerror("Type mismatch");
 
     symbol->setValue(value);
 }
@@ -94,7 +94,7 @@ int SymbolTable::getVariableValue(string identifier) const
     PrimitiveSymbol *symbol = dynamic_cast<PrimitiveSymbol *>(it->second);
 
     if (!symbol)
-        yyerror("Cannot cast function to primitive symbol."); // throw "Cannot cast function to primitive symbol!";
+        yyerror("Cannot cast function to primitive symbol.");
 
     return symbol->getValue();
 }

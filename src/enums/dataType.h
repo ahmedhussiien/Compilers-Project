@@ -6,7 +6,7 @@ enum DataType
     DTYPE_INT,
     DTYPE_FLOAT,
     DTYPE_BOOL,
-    DTYPE_STRING,
+    DTYPE_CHAR,
     DTYPE_VOID
 };
 

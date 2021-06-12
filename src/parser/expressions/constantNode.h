@@ -11,7 +11,7 @@ class ConstantNode : public ExpressionNode
 
 public:
     ConstantNode(int value);
-    ConstantNode(char *value);
+    ConstantNode(char value);
     ConstantNode(float value);
     ConstantNode(bool value);
 

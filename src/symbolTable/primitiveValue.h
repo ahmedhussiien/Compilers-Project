@@ -12,13 +12,15 @@ struct PrimitiveValue
         int intValue;
         float floatValue;
         bool boolValue;
-        const char *charPtr;
+        char charValue;
     } value;
 
-    ~PrimitiveValue()
+    int getIntValue()
     {
-        if (type == DTYPE_STRING && value.charPtr)
-            delete value.charPtr;
+        if (type == DTYPE_FLOAT)
+            return value.floatValue;
+
+        return value.intValue;
     }
 };
 

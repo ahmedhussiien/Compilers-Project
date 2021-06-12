@@ -15,6 +15,17 @@ DataType IdentifierNode::getType()
 
 void IdentifierNode::semanticCheck()
 {
-    if (!symbolTable->isDeclared(name))
-        yyerror("Referrencing undeclared variable.");
+    PrimitiveSymbol *symbol = symbolTable->getPrimitiveSymbol(name);
+
+    if (!symbol)
+    {
+        yyerror("Referrencing undeclared variable'" + name + "'.");
+        return;
+    }
+
+    if (!symbol->getIsInitialized())
+    {
+        yyerror("Variable '" + name + "' is used before initialization.");
+        return;
+    }
 }
