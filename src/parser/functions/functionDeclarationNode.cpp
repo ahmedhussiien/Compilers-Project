@@ -18,7 +18,6 @@ void FunctionDeclarationNode::semanticCheck()
 {
   if (returnType == DTYPE_VOID)
   { // return type is void, all return statements should be of type void
-    // StatementsListNode *stmtsList = (StatementsListNode *)statements;
     StatementsListNode *stmtsList = dynamic_cast<StatementsListNode *>(statements);
     vector<Node *> stmtsVector = stmtsList->getStatements();
     for (Node *node : stmtsVector)
@@ -45,7 +44,8 @@ void FunctionDeclarationNode::semanticCheck()
         if (rn->getReturnType() != returnType)
         {
           std::string type = DataTypeStr[returnType];
-          yyerror("Expected " + type + " return type.");
+          type = "Expected " + type + " return type.";
+          yyerror(type.c_str());
         }
       }
     }
