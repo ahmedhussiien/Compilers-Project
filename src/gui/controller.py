@@ -41,10 +41,17 @@ class Controller:
                 self.view.set_window_title(self.model.file_name)
             else:
                 return False
-            self.view.set_status_text(file_path+"(Saved Successfully)")
+            self.view.set_status_text(file_path+" (Saved Successfully)")
         return True
 
     def compile(self, _=None):
+        if self.save_file():
+            output = subprocess.run(
+                ["compiler.exe", f"{self.model.file_path} out.asm"], capture_output=True)
+            output = output.stdout
+            self.view.set_output_text(output)
+
+    def run(self, _=None):
         if self.save_file():
             output = subprocess.run(
                 ["interpreter.exe", self.model.file_path], capture_output=True)

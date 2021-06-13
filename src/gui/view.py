@@ -49,6 +49,7 @@ class View:
         self.window.bind('<Control-o>', self.controller.open_file)
         self.window.bind('<Control-s>', self.controller.save_file)
         self.window.bind('<Control-6>', self.controller.compile)
+        self.window.bind('<Control-5>', self.controller.run)
 
     def start_ide(self):
         # run the main loop of the window (start the window)
@@ -61,6 +62,7 @@ class View:
                 "Open (Ctrl + O)": self.controller.open_file,
                 "Save (Ctrl + S)": self.controller.save_file,
                 "Compile (Ctrl + 6)": self.controller.compile,
+                "Run (Ctrl + 5)": self.controller.run,
                 "": None,
                 "Exit (Alt + f4)": self.window.quit
             },

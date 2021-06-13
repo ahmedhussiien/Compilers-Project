@@ -88,6 +88,7 @@ void DeclarationNode::compile()
         else
             fprintf(yyout, "%s\t%s\t0\n", name.c_str(), varType.c_str(), exprNode->execute());
         break;
+
     case DTYPE_BOOL:
         // init bool
         if (exprNode)
@@ -95,6 +96,7 @@ void DeclarationNode::compile()
         else
             fprintf(yyout, "%s\t%s\t0\n", name.c_str(), varType.c_str(), exprNode->execute());
         break;
+
     case DTYPE_STRING:
         // init string
         if (exprNode)
@@ -102,6 +104,7 @@ void DeclarationNode::compile()
         else
             fprintf(yyout, "%s\t%s\t\'\'\n", name.c_str(), varType.c_str());
         break;
+
     case DTYPE_VOID:
         // init void
         // void should give semantic error
