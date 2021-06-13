@@ -14,6 +14,7 @@ public:
                 Node *incrementStatement, Node *executionStatement);
 
     virtual int execute();
+    virtual void compile();
 
     ~ForLoopNode();
 };

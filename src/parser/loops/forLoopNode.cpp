@@ -16,6 +16,23 @@ int ForLoopNode::execute()
     return 0;
 }
 
+void ForLoopNode::compile()
+{
+    int label1, label2;
+
+    initialStatement->compile();
+
+    fprintf(yyout, "L%03d:\n", label1 = labelCounter++);
+    conditionStatement->compile();
+
+    fprintf(yyout, "JZ L%03d\n", label2 = labelCounter++);
+    executionStatement->compile();
+    incrementStatement->compile();
+
+    fprintf(yyout, "JMP L%03d\n", label1);
+    fprintf(yyout, "L%03d:\n", label2);
+}
+
 ForLoopNode::~ForLoopNode()
 {
     delete initialStatement;
