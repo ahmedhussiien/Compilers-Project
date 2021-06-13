@@ -18,7 +18,7 @@ class AssignmentNode : public ExpressionNode
 
 public:
     AssignmentNode(SymbolTable *symbolTable, char *name,
-                   ExpressionNode *exprNode = nullptr);
+                   ExpressionNode *exprNode);
 
     virtual DataType getType();
     virtual void semanticCheck();

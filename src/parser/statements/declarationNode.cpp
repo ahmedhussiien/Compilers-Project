@@ -8,15 +8,7 @@ DeclarationNode::DeclarationNode(SymbolTable *symbolTable, char *name,
     : Node(), symbolTable(symbolTable), name(name), type(type),
       isConst(isConst), exprNode(exprNode)
 {
-    semanticCheck();
-    if (exprNode)
-    {
-        symbolTable->declareVariable(name, type, exprNode->execute(), true, isConst);
-    }
-    else
-    {
-        symbolTable->declareVariable(name, type, 0, false, isConst);
-    }
+    // semanticCheck();
 }
 
 DeclarationNode::DeclarationNode(const DeclarationNode &node)
@@ -26,15 +18,7 @@ DeclarationNode::DeclarationNode(const DeclarationNode &node)
     isConst = node.isConst;
     exprNode = node.exprNode;
     symbolTable = node.symbolTable;
-    semanticCheck();
-    if (exprNode)
-    {
-        symbolTable->declareVariable(name, type, exprNode->execute(), true, isConst);
-    }
-    else
-    {
-        symbolTable->declareVariable(name, type, 0, false, isConst);
-    }
+    // semanticCheck();
 }
 
 string DeclarationNode::getName() const
@@ -64,15 +48,47 @@ void DeclarationNode::setExpressionNode(ExpressionNode *exprNode)
 
 int DeclarationNode::execute()
 {
-    return 1;
+    if (type == DTYPE_VOID)
+    {
+        yyerror("Incomplete type is not allowed.");
+        return 0;
+    }
+
+    if (exprNode && exprNode->getType() != type)
+    {
+        yyerror("Variable type mismatch.");
+        return 0;
+    }
+
+    if (exprNode)
+    {
+        symbolTable->declareVariable(name, type, exprNode->execute(), true, isConst);
+        return 1;
+    }
+    else
+    {
+        symbolTable->declareVariable(name, type, 0, false, isConst);
+        return 1;
+    }
 }
 
 void DeclarationNode::compile()
 {
+    if (type == DTYPE_VOID)
+        return yyerror("Incomplete type is not allowed.");
+
+    if (exprNode && exprNode->getType() != type)
+        return yyerror("Variable type mismatch.");
+
     if (exprNode)
     {
         exprNode->compile();
+        symbolTable->declareVariable(name, type, 0, true, isConst);
         fprintf(yyout, "POP %s\n", name.c_str());
+    }
+    else
+    {
+        symbolTable->declareVariable(name, type, 0, false, isConst);
     }
 }
 

@@ -4,11 +4,13 @@
 BinaryOpNode::BinaryOpNode(BinaryOperator op, ExpressionNode *n1, ExpressionNode *n2)
     : ExpressionNode(), op(op), n1(n1), n2(n2)
 {
-    semanticCheck();
+    // semanticCheck();
 }
 
 int BinaryOpNode::execute()
 {
+    semanticCheck();
+
     switch (op)
     {
     case OP_PLUS:
@@ -54,6 +56,8 @@ int BinaryOpNode::execute()
 
 void BinaryOpNode::compile()
 {
+    semanticCheck();
+
     n1->compile();
     n2->compile();
 

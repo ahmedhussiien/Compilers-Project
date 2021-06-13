@@ -10,14 +10,12 @@ extern int column;
 extern FILE *yyin;
 extern FILE *yyout;
 
-std::vector<Error *> errors;
-
 int yyparse();
 
 void yyerror(const std::string str)
 {
     Error *err = new Error(str, yylineno, column);
-    errors.push_back(err);
+    err->print();
 }
 
 void execute(Node *program)
@@ -63,11 +61,6 @@ int main(int argc, char *argv[])
     }
 
     yyparse();
-
-    for (int i = 0; i < errors.size(); i++)
-    {
-        errors[i]->print();
-    }
 
     return 0;
 }

@@ -6,14 +6,11 @@ AssignmentNode::AssignmentNode(SymbolTable *symbolTable, char *name,
     : symbolTable(symbolTable), name(name), exprNode(exprNode)
 {
     symbol = symbolTable->getPrimitiveSymbol(name);
-    semanticCheck();
+    // semanticCheck();
 }
 
 int AssignmentNode::execute()
 {
-    if (!exprNode)
-        return -1;
-
     symbolTable->assignVariableValue(name, exprNode->getType(), exprNode->execute());
     return 1;
 }
@@ -22,9 +19,6 @@ DataType AssignmentNode::getType() { return exprNode->getType(); }
 
 void AssignmentNode::compile()
 {
-    if (!exprNode)
-        return;
-
     exprNode->compile();
     symbolTable->assignVariableValue(name, exprNode->getType());
     fprintf(yyout, "POP %s\n", name.c_str());

@@ -9,23 +9,24 @@ FunctionExecutionNode::FunctionExecutionNode(string identifier,
     : ExpressionNode(), identifier(identifier), argsNode(argsNode),
       symbolTable(symbolTable)
 {
-    semanticCheck();
+    // semanticCheck();
 }
 
 void FunctionExecutionNode::compile()
 {
+    execute();
     fprintf(yyout, "CALL %s\n", identifier.c_str());
 }
 
 int FunctionExecutionNode::execute()
 {
-    if (!symbolTable)
-        yyerror("Couldn't access symbol table.");
-
     FunctionSymbol *symbol = symbolTable->getFunctionSymbol(identifier);
 
     if (!symbol)
+    {
         yyerror("Undeclared function.");
+        return -1;
+    }
 
     FunctionParamsNode *paramsNode = symbol->getParamsNode();
     vector<DeclarationNode *> params = paramsNode->getParams();
@@ -58,7 +59,7 @@ void FunctionExecutionNode::semanticCheck()
     FunctionSymbol *symbol = symbolTable->getFunctionSymbol(identifier);
 
     if (!symbol)
-        yyerror("Undeclared function.");
+        return yyerror("Undeclared function.");
 
     FunctionParamsNode *paramsNode = symbol->getParamsNode();
     vector<DeclarationNode *> params = paramsNode->getParams(); // arguments in function declaration
@@ -75,13 +76,10 @@ void FunctionExecutionNode::semanticCheck()
 
 DataType FunctionExecutionNode::getType()
 {
-    if (!symbolTable)
-        yyerror("Function error.");
-
     FunctionSymbol *symbol = symbolTable->getFunctionSymbol(identifier);
 
     if (!symbol)
-        yyerror("Function not declared.");
+        return DTYPE_VOID;
 
     return symbol->getReturnType();
 }

@@ -3,10 +3,27 @@
 IdentifierNode::IdentifierNode(SymbolTable *symbolTable, char *name)
     : ExpressionNode(), symbolTable(symbolTable), name(name)
 {
-    semanticCheck();
+    // semanticCheck();
 }
 
-int IdentifierNode::execute() { return symbolTable->getVariableValue(name); }
+int IdentifierNode::execute()
+{
+    PrimitiveSymbol *symbol = symbolTable->getPrimitiveSymbol(name);
+
+    if (!symbol)
+    {
+        yyerror("Referrencing undeclared variable '" + name + "'.");
+        return 0;
+    }
+
+    if (!symbol->getIsInitialized())
+    {
+        yyerror("Variable '" + name + "' is used before initialization.");
+        return 0;
+    }
+
+    return symbol->getValue();
+}
 
 DataType IdentifierNode::getType()
 {
@@ -15,6 +32,14 @@ DataType IdentifierNode::getType()
 
 void IdentifierNode::compile()
 {
+    PrimitiveSymbol *symbol = symbolTable->getPrimitiveSymbol(name);
+
+    if (!symbol)
+        yyerror("Referrencing undeclared variable '" + name + "'.");
+
+    if (symbol && !symbol->getIsInitialized())
+        yyerror("Variable '" + name + "' is used before initialization.");
+
     fprintf(yyout, "PUSH %s\n", name.c_str());
 }
 
