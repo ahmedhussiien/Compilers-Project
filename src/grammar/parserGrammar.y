@@ -55,8 +55,8 @@ int labelCounter = 0;
 %type <statementListPtr>    stmt_list 
 %type <declarationPtr>      variable_declaration
 
-%type <funcArgsPtr>         function_args
-%type <funcParamsPtr>       function_params
+%type <funcArgsPtr>         function_args function_args_expr
+%type <funcParamsPtr>       function_params function_params_decl
 %type <funcDeclarationPtr>  function_declaration_stmt
 
 // Data types
@@ -111,6 +111,7 @@ stmt:
     |   branch_stmt                 { $$ = $1; }
     |   switch_stmt                 { $$ = $1; }
     |   RETURN expr ';'             { $$ = new ReturnNode($2);}
+    |   RETURN ';'                  { $$ = new ReturnNode();}
     |   ';'                         { $$ = new StatementsListNode(); }
     |   '{' '}'                     { $$ = new StatementsListNode(); }
     |   '{' stmt_list '}'           { $$ = $2; }
@@ -158,24 +159,34 @@ function_params:
     /* NULL */ {   
         $$ = new FunctionParamsNode(); 
     } 
-    | variable_declaration {
+    | function_params_decl {
+        $$ = $1;
+    };
+
+function_params_decl:
+    variable_declaration {
         $$ = new FunctionParamsNode();
         $$->addParam($1);
     }
-    | function_params ',' variable_declaration { 
+    | function_params_decl ',' variable_declaration { 
         $$ = $1;
         $$->addParam($3); 
     };
-
+    
 function_args:
     /* NULL */ { 
         $$ = new FunctionArgsNode(); 
     } 
-    | expr { 
+    | function_args_expr { 
+        $$ = $1;
+    };
+
+function_args_expr:
+    expr { 
         $$ = new FunctionArgsNode();
         $$->addArg($1);
     }
-    | function_args ',' expr  { 
+    | function_args_expr ',' expr  { 
         $$ = $1;
         $$->addArg($3);
     };

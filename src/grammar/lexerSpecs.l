@@ -40,8 +40,6 @@ void incrementCursor(char *str){
 "<="            { incrementCursor(); return LE; }
 "=="            { incrementCursor(); return EQ; }
 "!="            { incrementCursor(); return NE; }
-"++"            { incrementCursor(); return INC; }
-"--"            { incrementCursor(); return DEC; }
 "and"           { incrementCursor(); return AND; }
 "or"            { incrementCursor(); return OR; }
 "not"           { incrementCursor(); return NOT; }
