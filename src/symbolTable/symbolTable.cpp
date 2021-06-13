@@ -1,3 +1,4 @@
+#include <cstdio>
 #include <string>
 #include <unordered_map>
 
@@ -7,6 +8,8 @@
 #include "symbolTable.h"
 
 #include "enums/dataType.h"
+
+extern FILE *yyout;
 
 bool SymbolTable::isDeclared(string identifier)
 {
@@ -20,7 +23,8 @@ void SymbolTable::declareVariable(string identifier, DataType dataType,
     if (isDeclared(identifier))
         return yyerror("Variable already declared.");
 
-    PrimitiveSymbol *symbol = new PrimitiveSymbol(value, isInitialized, isConst, dataType);
+    PrimitiveSymbol *symbol =
+        new PrimitiveSymbol(value, isInitialized, isConst, dataType);
 
     table[identifier] = symbol;
 }
@@ -130,4 +134,26 @@ DataType SymbolTable::getVariableType(string identifier) const
     }
 
     return symbol->getDataType();
+}
+
+void SymbolTable::printSymbols() const
+{
+    for (auto &it : table)
+    {
+        if (it.second->getType() == PRIMITIVE)
+        {
+            PrimitiveSymbol *symbol = dynamic_cast<PrimitiveSymbol *>(it.second);
+            fprintf(yyout,
+                    "name: %s, symbolType: primitive, dataType: %s, isConst: %d, "
+                    "isInitialized: %d\n",
+                    it.first.c_str(), DataTypeStr[symbol->getDataType()],
+                    symbol->getIsConst(), symbol->getIsInitialized());
+        }
+        else
+        {
+            FunctionSymbol *symbol = dynamic_cast<FunctionSymbol *>(it.second);
+            fprintf(yyout, "name: %s, symbolType: function, returnType: %s\n",
+                    it.first.c_str(), DataTypeStr[symbol->getReturnType()]);
+        }
+    }
 }

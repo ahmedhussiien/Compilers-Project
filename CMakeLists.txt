@@ -10,6 +10,7 @@ set(PARSER_SOURCES
     src/parser/expressions/identifierNode.cpp
     src/parser/expressions/unaryOpNode.cpp
     src/parser/expressions/assignmentNode.cpp
+    src/parser/expressions/printSymbolsNode.cpp
     src/parser/expressions/print.cpp
     
     src/parser/statements/declarationNode.cpp

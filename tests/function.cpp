@@ -5,3 +5,5 @@ int sum(int x, int y)
 
 int a = sum(10, 20);
 a = sum(a, a);
+
+printSymbols();

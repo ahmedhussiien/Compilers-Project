@@ -13,6 +13,7 @@
 #include "expressions/constantNode.h"
 #include "expressions/identifierNode.h"
 #include "expressions/assignmentNode.h"
+#include "expressions/printSymbolsNode.h"
 #include "expressions/print.h"
 
 #include "branches/ifNode.h"

@@ -12,3 +12,5 @@ else
 {
   b = x;
 }
+
+printSymbols();

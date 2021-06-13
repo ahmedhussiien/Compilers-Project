@@ -66,6 +66,7 @@ void incrementCursor(char *str){
 
 "return"        { incrementCursor(); return RETURN; }
 "print"         { incrementCursor(); return PRINT; }
+"printSymbols"  { incrementCursor(); return PRINT_SYMBOLS;}
 
 
 "true"              {

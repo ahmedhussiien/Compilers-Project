@@ -82,6 +82,7 @@ int labelCounter = 0;
 
 // Standard functions
 %token PRINT
+%token PRINT_SYMBOLS
 
 // Reserved keywords
 %token RETURN
@@ -213,7 +214,8 @@ expr:
     ;
 
 standard_functions:
-        PRINT '(' expr ')'      { $$ = new PrintNode($3); }
+        PRINT '(' expr ')'         { $$ = new PrintNode($3); }
+    |   PRINT_SYMBOLS '(' ')'      { $$ = new PrintSymbolsNode(&symbolTable); }
     ;
 
 variable_type:
