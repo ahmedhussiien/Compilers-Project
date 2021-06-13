@@ -13,6 +13,11 @@ DataType IdentifierNode::getType()
     return symbolTable->getVariableType(name);
 }
 
+void IdentifierNode::compile()
+{
+    fprintf(yyout, "PUSH %s\n", name.c_str());
+}
+
 void IdentifierNode::semanticCheck()
 {
     PrimitiveSymbol *symbol = symbolTable->getPrimitiveSymbol(name);

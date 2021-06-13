@@ -11,6 +11,7 @@ class PrintNode : public ExpressionNode
 public:
     PrintNode(ExpressionNode *n);
     virtual int execute();
+    virtual void compile();
     virtual DataType getType();
 };
 

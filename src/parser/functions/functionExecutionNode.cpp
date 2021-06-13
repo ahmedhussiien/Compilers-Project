@@ -12,6 +12,11 @@ FunctionExecutionNode::FunctionExecutionNode(string identifier,
     semanticCheck();
 }
 
+void FunctionExecutionNode::compile()
+{
+    fprintf(yyout, "CALL %s\n", identifier.c_str());
+}
+
 int FunctionExecutionNode::execute()
 {
     if (!symbolTable)

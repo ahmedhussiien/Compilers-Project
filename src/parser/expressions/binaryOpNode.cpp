@@ -52,6 +52,66 @@ int BinaryOpNode::execute()
     }
 }
 
+void BinaryOpNode::compile()
+{
+    n1->compile();
+    n2->compile();
+
+    switch (op)
+    {
+    case OP_PLUS:
+        fprintf(yyout, "ADD\n");
+        break;
+
+    case OP_MINUS:
+        fprintf(yyout, "SUB\n");
+        break;
+
+    case OP_MULTIPLY:
+        fprintf(yyout, "MUL\n");
+        break;
+
+    case OP_DIVIDE:
+        fprintf(yyout, "DIV\n");
+        break;
+
+    case OP_LESS_THAN:
+        fprintf(yyout, "COMP_LT\n");
+        break;
+
+    case OP_GREATER_THAN:
+        fprintf(yyout, "COMP_GT\n");
+        break;
+
+    case OP_LE:
+        fprintf(yyout, "COMP_LE\n");
+        break;
+
+    case OP_GE:
+        fprintf(yyout, "COMP_GE\n");
+        break;
+
+    case OP_NE:
+        fprintf(yyout, "COMP_NE\n");
+        break;
+
+    case OP_EQ:
+        fprintf(yyout, "COMP_EQ\n");
+        break;
+
+    case OP_AND:
+        fprintf(yyout, "AND\n");
+        break;
+
+    case OP_OR:
+        fprintf(yyout, "OR\n");
+        break;
+
+    default:
+        return;
+    }
+}
+
 DataType BinaryOpNode::getType()
 {
     if (op == OP_PLUS || op == OP_MINUS || op == OP_MULTIPLY || op == OP_DIVIDE)

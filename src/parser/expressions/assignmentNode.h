@@ -12,18 +12,20 @@ using std::string;
 class AssignmentNode : public ExpressionNode
 {
     SymbolTable *symbolTable;
-    string name;
-    DataType type;
-
+    PrimitiveSymbol *symbol;
     ExpressionNode *exprNode;
+    string name;
 
 public:
-    AssignmentNode(SymbolTable *symbolTable, char *name, DataType type,
+    AssignmentNode(SymbolTable *symbolTable, char *name,
                    ExpressionNode *exprNode = nullptr);
 
-    virtual int execute();
     virtual DataType getType();
     virtual void semanticCheck();
+
+    virtual int execute();
+    virtual void compile();
+
     ~AssignmentNode();
 };
 

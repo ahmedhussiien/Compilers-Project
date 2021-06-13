@@ -34,6 +34,21 @@ int ConstantNode::execute()
     return value->getIntValue();
 }
 
+void ConstantNode::compile()
+{
+    switch (value->type)
+    {
+    case DTYPE_FLOAT:
+        fprintf(yyout, "PUSH %f.3\n", value->value.floatValue);
+
+    case DTYPE_CHAR:
+        fprintf(yyout, "PUSH '%c'\n", value->value.charValue);
+
+    default:
+        fprintf(yyout, "PUSH %d\n", value->getIntValue());
+    }
+}
+
 DataType ConstantNode::getType()
 {
     return value->type;

@@ -32,7 +32,7 @@ public:
 
     FunctionSymbol *getFunctionSymbol(string identifier) const;
 
-    void assignVariableValue(string identifier, DataType type, int value);
+    void assignVariableValue(string identifier, DataType type, int value = 0);
 
     int getVariableValue(string identifier) const;
 

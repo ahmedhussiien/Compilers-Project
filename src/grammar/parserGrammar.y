@@ -205,7 +205,7 @@ expr:
     |   expr EQ expr                    { $$ = new BinaryOpNode(OP_EQ, $1, $3); }
     |   expr AND expr                   { $$ = new BinaryOpNode(OP_AND, $1, $3); }
     |   expr OR expr                    { $$ = new BinaryOpNode(OP_OR, $1, $3); }
-    |   VARIABLE '=' expr               { $$ = new AssignmentNode(&symbolTable, $1, DTYPE_INT, $3); }
+    |   VARIABLE '=' expr               { $$ = new AssignmentNode(&symbolTable, $1, $3); }
     |   VARIABLE '(' function_args ')'  { $$ = new FunctionExecutionNode($1, $3, &symbolTable);}
     |   standard_functions              { $$ = $1; }
     |   '(' expr ')'                    { $$ = $2; }
