@@ -14,6 +14,7 @@ int yylex(void);
 void yyerror(const std::string);
 
 SymbolTable symbolTable;
+int labelCounter = 0;
 %}
 
 %union {

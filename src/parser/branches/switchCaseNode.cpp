@@ -28,6 +28,10 @@ int SwitchCaseNode::execute()
     return 0;
 }
 
+void SwitchCaseNode::compile()
+{
+}
+
 SwitchCaseNode::~SwitchCaseNode()
 {
     delete expr;

@@ -40,12 +40,15 @@ void ConstantNode::compile()
     {
     case DTYPE_FLOAT:
         fprintf(yyout, "PUSH %f.3\n", value->value.floatValue);
+        break;
 
     case DTYPE_CHAR:
         fprintf(yyout, "PUSH '%c'\n", value->value.charValue);
+        break;
 
     default:
         fprintf(yyout, "PUSH %d\n", value->getIntValue());
+        break;
     }
 }
 

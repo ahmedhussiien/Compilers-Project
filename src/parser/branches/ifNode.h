@@ -15,6 +15,7 @@ public:
            Node *elseStatement);
 
     virtual int execute();
+    virtual void compile();
 
     virtual ~IfNode();
 };

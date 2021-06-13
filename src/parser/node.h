@@ -4,7 +4,10 @@
 #include <cstdio>
 #include <string>
 #include "dataType.h"
+
 extern FILE *yyout;
+extern int labelCounter;
+
 void yyerror(const std::string str);
 
 class Node

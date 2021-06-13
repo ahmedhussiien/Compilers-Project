@@ -18,6 +18,12 @@ int StatementsListNode::execute()
     return statements[statements.size() - 1]->execute();
 }
 
+void StatementsListNode::compile()
+{
+    for (int i = 0; i < statements.size(); i++)
+        statements[i]->compile();
+}
+
 vector<Node *> StatementsListNode::getStatements()
 {
     return statements;
