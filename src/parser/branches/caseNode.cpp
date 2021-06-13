@@ -16,6 +16,12 @@ ExpressionNode *CaseNode::getExpressionNode() const
     return this->expr;
 }
 
+void CaseNode::compile()
+{
+    statement->compile();
+    fprintf(yyout, "RET\n");
+}
+
 CaseNode::~CaseNode()
 {
     delete expr;

@@ -14,6 +14,18 @@ class Controller:
     def start_ide(self):
         self.view.start_ide()
 
+    def check_dependencies(self):
+        dependencies = ["interpreter.exe", "compiler.exe"]
+        for dependency in dependencies:
+            if not self.check_dependency(dependency):
+                return
+
+    def check_dependency(self, dependency):
+        if not Model.file_exists(dependency):
+            self.view.show_dependency_warning(dependency)
+            return False
+        return True
+
     def open_file(self, _=None):
         file_path = self.view.open_file_dialog()
         if file_path:
@@ -45,6 +57,10 @@ class Controller:
         return True
 
     def compile(self, _=None):
+        # first check for compiler.exe
+        if not self.check_dependency("compiler.exe"):
+            return
+
         if self.save_file():
             output = subprocess.run(
                 ["compiler.exe", f"{self.model.file_path} out.asm"], capture_output=True)
@@ -52,6 +68,10 @@ class Controller:
             self.view.set_output_text(output)
 
     def run(self, _=None):
+        # first check for interpreter.exe
+        if not self.check_dependency("interpreter.exe"):
+            return
+
         if self.save_file():
             output = subprocess.run(
                 ["interpreter.exe", self.model.file_path], capture_output=True)

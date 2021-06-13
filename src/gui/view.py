@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import filedialog
 from tkinter.scrolledtext import ScrolledText
 from tkinter.filedialog import *
+from tkinter.messagebox import *
 
 
 class View:
@@ -33,7 +34,7 @@ class View:
         # add output text widget
         self.output_text_area = ScrolledText(
             self.window, background='#131313', height=9,
-            foreground="white", insertbackground="white", state=DISABLED)
+            foreground="white", insertbackground="white", state=DISABLED, padx=20)
         self.output_text_area.pack(fill="x")
 
         # create status bar
@@ -42,18 +43,31 @@ class View:
         self.status_bar.pack(fill="both", expand=True)
 
         # set shortcut bindings
-        self.window.bind('<Control-N>', self.controller.new_file)
-        self.window.bind('<Control-O>', self.controller.open_file)
-        self.window.bind('<Control-S>', self.controller.save_file)
-        self.window.bind('<Control-n>', self.controller.new_file)
-        self.window.bind('<Control-o>', self.controller.open_file)
-        self.window.bind('<Control-s>', self.controller.save_file)
-        self.window.bind('<Control-6>', self.controller.compile)
-        self.window.bind('<Control-5>', self.controller.run)
+        self.text_area.bind('<Control-N>', self.controller.new_file)
+        self.text_area.bind('<Control-O>', self.controller.open_file)
+        self.text_area.bind('<Control-S>', self.controller.save_file)
+        self.text_area.bind('<Control-n>', self.controller.new_file)
+        self.text_area.bind('<Control-o>', self.controller.open_file)
+        self.text_area.bind('<Control-s>', self.controller.save_file)
+        self.text_area.bind('<Control-Key-6>', self.controller.compile)
+        self.text_area.bind('<Control-Key-5>', self.controller.run)
+        self.text_area.bind('<Control-slash>', self.toggle_comment)
 
     def start_ide(self):
         # run the main loop of the window (start the window)
         self.window.mainloop()
+
+    def show_dependency_warning(self, dependency):
+        showwarning(
+            "Warning", f"{dependency} is missing from current directory.")
+
+    def toggle_comment(self, _=None):
+        if self.text_area.get("insert linestart", "insert linestart + 2 chars") == "//":
+            self.text_area.delete("insert linestart",
+                                  "insert linestart + 2 chars")
+        else:
+            self.text_area.insert("insert linestart", "//")
+        return "break"
 
     def __create_menu(self):
         menus = {
@@ -70,6 +84,7 @@ class View:
                 "Cut (Ctrl + X)": self.__cut_handler,
                 "Copy (Ctrl + C)": self.__copy_handler,
                 "Paste (Ctrl + V)": self.__paste_handler,
+                "Comment/Uncomment line (Ctrl + /)": self.toggle_comment,
                 "Undo (Ctrl + Z)": self.__undo_handler,
                 "Redo (Ctrl + Y)": self.__redo_handler
             }

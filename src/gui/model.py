@@ -1,5 +1,4 @@
 import os
-from tkinter import filedialog
 
 
 class Model:
@@ -28,3 +27,6 @@ class Model:
         self.file_path = None
         self.file_content = None
         self.file_name = None
+
+    def file_exists(file_name):
+        return os.path.isfile(file_name)

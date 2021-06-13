@@ -14,6 +14,7 @@ public:
 
     virtual int execute();
     ExpressionNode *getExpressionNode() const;
+    void compile();
 
     ~CaseNode();
 };
