@@ -1,5 +1,5 @@
-#include <iostream>
 #include "error.h"
+#include <iostream>
 
 using std::cout;
 using std::to_string;
@@ -21,4 +21,11 @@ string Error::toString()
 {
     return "error: " + message + " in line " + to_string(lineNumber) +
            ", column " + to_string(columnNumber) + "\n";
+}
+
+string Error::toJsonString()
+{
+    return "{\"line\":" + to_string(lineNumber) +
+           ", \"column\":" + to_string(columnNumber) +
+           ", \"message\": \"" + message + "\"}";
 }

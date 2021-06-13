@@ -1,8 +1,10 @@
 #include <iostream>
-#include <vector>
+#include <fstream>
 
 #include "parser/node.h"
 #include "parser/error/error.h"
+
+using std::ofstream;
 
 extern int yylineno;
 extern int column;
@@ -10,12 +12,14 @@ extern int column;
 extern FILE *yyin;
 extern FILE *yyout;
 
+ofstream errorsFile;
+
 int yyparse();
 
 void yyerror(const std::string str)
 {
     Error *err = new Error(str, yylineno, column);
-    err->print();
+    errorsFile << err->toString();
 }
 
 void execute(Node *program)
@@ -59,6 +63,8 @@ int main(int argc, char *argv[])
             setOutputSource(argv[2]);
         }
     }
+
+    errorsFile.open("errors.txt");
 
     yyparse();
 

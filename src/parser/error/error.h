@@ -15,6 +15,7 @@ public:
     Error(string message, int lineNumber, int columnNumber);
     void print();
     string toString();
+    string toJsonString();
 };
 
 #endif
