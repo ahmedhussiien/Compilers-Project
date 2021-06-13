@@ -69,43 +69,10 @@ int DeclarationNode::execute()
 
 void DeclarationNode::compile()
 {
-    fprintf(yyout, ".DATA\n");
-    string varType = (isConst) ? "EQU" : "DB";
-    switch (type)
+    if (exprNode)
     {
-    case DTYPE_INT:
-        // init int
-        if (exprNode)
-            fprintf(yyout, "%s\t%s\t%d\n", name.c_str(), varType.c_str(), exprNode->execute());
-        else
-            fprintf(yyout, "%s\t%s\t0\n", name.c_str(), varType.c_str(), exprNode->execute());
-        break;
-
-    case DTYPE_FLOAT:
-        // init float
-        if (exprNode)
-            fprintf(yyout, "%s\t%s\t%d\n", name.c_str(), varType.c_str(), exprNode->execute());
-        else
-            fprintf(yyout, "%s\t%s\t0\n", name.c_str(), varType.c_str(), exprNode->execute());
-        break;
-    case DTYPE_BOOL:
-        // init bool
-        if (exprNode)
-            fprintf(yyout, "%s\t%s\t%d\n", name.c_str(), varType.c_str(), exprNode->execute());
-        else
-            fprintf(yyout, "%s\t%s\t0\n", name.c_str(), varType.c_str(), exprNode->execute());
-        break;
-    case DTYPE_CHAR:
-        // init string
-        if (exprNode)
-            fprintf(yyout, "%s\t%s\t%s\n", name.c_str(), varType.c_str(), exprNode->execute());
-        else
-            fprintf(yyout, "%s\t%s\t\'\'\n", name.c_str(), varType.c_str());
-        break;
-    case DTYPE_VOID:
-        // init void
-        // void should give semantic error
-        break;
+        exprNode->compile();
+        fprintf(yyout, "POP %s\n", name.c_str());
     }
 }
 
