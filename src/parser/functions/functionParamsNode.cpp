@@ -19,6 +19,14 @@ int FunctionParamsNode::execute()
     return 0;
 }
 
+void FunctionParamsNode::compile()
+{
+    for (DeclarationNode *param : params)
+    {
+        param->compileAsArg();
+    }
+}
+
 FunctionParamsNode::~FunctionParamsNode()
 {
     for (int i = 0; i < params.size(); i++)

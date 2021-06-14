@@ -9,6 +9,14 @@ DeclarationNode::DeclarationNode(SymbolTable *symbolTable, char *name,
       isConst(isConst), exprNode(exprNode)
 {
     // semanticCheck();
+    if (exprNode)
+    {
+        symbolTable->declareVariable(name, type, 0, true, isConst);
+    }
+    else
+    {
+        symbolTable->declareVariable(name, type, 0, false, isConst);
+    }
 }
 
 DeclarationNode::DeclarationNode(const DeclarationNode &node)
@@ -19,6 +27,14 @@ DeclarationNode::DeclarationNode(const DeclarationNode &node)
     exprNode = node.exprNode;
     symbolTable = node.symbolTable;
     // semanticCheck();
+    if (exprNode)
+    {
+        symbolTable->declareVariable(name, type, 0, true, isConst);
+    }
+    else
+    {
+        symbolTable->declareVariable(name, type, 0, false, isConst);
+    }
 }
 
 string DeclarationNode::getName() const
@@ -60,16 +76,17 @@ int DeclarationNode::execute()
         return 0;
     }
 
-    if (exprNode)
-    {
-        symbolTable->declareVariable(name, type, exprNode->execute(), true, isConst);
-        return 1;
-    }
-    else
-    {
-        symbolTable->declareVariable(name, type, 0, false, isConst);
-        return 1;
-    }
+    // if (exprNode)
+    // {
+    //     symbolTable->declareVariable(name, type, exprNode->execute(), true, isConst);
+    //     return 1;
+    // }
+    // else
+    // {
+    //     symbolTable->declareVariable(name, type, 0, false, isConst);
+    //     return 1;
+    // }
+    return 1;
 }
 
 void DeclarationNode::compile()
@@ -83,13 +100,18 @@ void DeclarationNode::compile()
     if (exprNode)
     {
         exprNode->compile();
-        symbolTable->declareVariable(name, type, 0, true, isConst);
+        // symbolTable->declareVariable(name, type, 0, true, isConst);
         fprintf(yyout, "POP %s\n", name.c_str());
     }
     else
     {
-        symbolTable->declareVariable(name, type, 0, false, isConst);
+        // symbolTable->declareVariable(name, type, 0, false, isConst);
     }
+}
+
+void DeclarationNode::compileAsArg()
+{
+    fprintf(yyout, "POP %s\n", name.c_str());
 }
 
 void DeclarationNode::semanticCheck()

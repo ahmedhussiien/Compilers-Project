@@ -26,7 +26,9 @@ void FunctionDeclarationNode::semanticCheck()
       if (rn)
       {
         if (rn->getReturnType() != DTYPE_VOID)
+        {
           yyerror("Expected void return type.");
+        }
       }
     }
   }
@@ -50,6 +52,16 @@ void FunctionDeclarationNode::semanticCheck()
       }
     }
     if (!hasReturn)
+    {
       yyerror("Function must have return statement.");
+    }
   }
+}
+
+void FunctionDeclarationNode::compile()
+{
+  fprintf(yyout, "%s PROC\n", name.c_str());
+  params->compile();
+  statements->compile();
+  fprintf(yyout, "END %s\n", name.c_str());
 }

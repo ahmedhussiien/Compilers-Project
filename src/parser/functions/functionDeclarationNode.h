@@ -29,6 +29,7 @@ public:
 
     virtual int execute();
     virtual void semanticCheck();
+    virtual void compile();
 };
 
 #endif

@@ -12,6 +12,7 @@ public:
     ReturnNode(ExpressionNode *exprNode = nullptr);
     virtual int execute();
     DataType getReturnType();
+    void compile();
     ~ReturnNode();
 };
 

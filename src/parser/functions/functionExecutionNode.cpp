@@ -9,12 +9,13 @@ FunctionExecutionNode::FunctionExecutionNode(string identifier,
     : ExpressionNode(), identifier(identifier), argsNode(argsNode),
       symbolTable(symbolTable)
 {
-    // semanticCheck();
+    semanticCheck();
 }
 
 void FunctionExecutionNode::compile()
 {
-    execute();
+    // semanticCheck();
+    argsNode->compile();
     fprintf(yyout, "CALL %s\n", identifier.c_str());
 }
 

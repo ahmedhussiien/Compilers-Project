@@ -19,6 +19,12 @@ DataType ReturnNode::getReturnType()
         return DTYPE_VOID;
 }
 
+void ReturnNode::compile()
+{
+    if (exprNode)
+        exprNode->compile();
+    fprintf(yyout, "RET\n");
+}
 ReturnNode::~ReturnNode()
 {
     if (exprNode)

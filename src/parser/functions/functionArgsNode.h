@@ -20,6 +20,7 @@ public:
 
     virtual int execute();
     int getCount();
+    void compile();
     ~FunctionArgsNode();
 };
 
