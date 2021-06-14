@@ -137,7 +137,7 @@ class View:
         self.status_bar.config(text=text)
 
     def open_file_dialog(self):
-        return filedialog.askopenfilename(title="Open File", filetypes=[("Text Files", "*.txt")])
+        return filedialog.askopenfilename(title="Open File", filetypes=[("Cpp Files", "*.cpp")])
 
     def set_text(self, content):
         self.text_area.insert(END, content)
@@ -146,7 +146,7 @@ class View:
         return self.text_area.get(1.0, END)
 
     def save_file_dialog(self):
-        return filedialog.asksaveasfilename(title="Save As", defaultextension=".txt", filetypes=[("Text Files", "*.txt")])
+        return filedialog.asksaveasfilename(title="Save As", defaultextension=".cpp", filetypes=[("Cpp Files", "*.cpp")])
 
     def set_output_text(self, content):
         self.output_text_area.config(state=NORMAL)

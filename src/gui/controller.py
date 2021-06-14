@@ -1,4 +1,3 @@
-from tkinter.constants import OUTSIDE
 from view import View
 from model import Model
 import subprocess
@@ -62,9 +61,15 @@ class Controller:
             return
 
         if self.save_file():
-            output = subprocess.run(
-                ["compiler.exe", f"{self.model.file_path} out.asm"], capture_output=True)
-            output = output.stdout
+            process = subprocess.run(
+                ["compiler.exe", self.model.file_path], capture_output=True, text=True)
+            compiled_output = process.stdout
+            err_output = Model.get_file_contents("errors.txt")
+            output = "Compiled Output:\n\n" + compiled_output
+            if err_output:
+                output += "\n\nERRORS written to errors.txt:\n" + err_output
+            else:
+                output += "\n\nCompiled with no errors\n"
             self.view.set_output_text(output)
 
     def run(self, _=None):
@@ -73,9 +78,9 @@ class Controller:
             return
 
         if self.save_file():
-            output = subprocess.run(
-                ["interpreter.exe", self.model.file_path], capture_output=True)
-            output = output.stdout
+            process = subprocess.run(
+                ["interpreter.exe", self.model.file_path], capture_output=True, text=True)
+            output = process.stdout
             self.view.set_output_text(output)
 
 

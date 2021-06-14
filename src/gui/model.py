@@ -28,5 +28,11 @@ class Model:
         self.file_content = None
         self.file_name = None
 
-    def file_exists(file_name):
+    def file_exists(file_name:str):
         return os.path.isfile(file_name)
+
+    def get_file_contents(file_path: str):
+        file = open(file_path, mode='r')
+        file_content = file.read()
+        file.close()
+        return file_content
