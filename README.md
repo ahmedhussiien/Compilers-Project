@@ -1,5 +1,10 @@
 # Compilers-Project
 
+This is a simple, strongly typed programming language. It has lots of similarities with the C language but with fewer features. It compiles the syntax to a machine language code.
+
+The language compiler & interpreter provide a clear and helpful error handler that will help you catch errors and solve them easily.
+The project uses Flex to generate the lexical analyzer and Bison to generate the parser for our language.
+
 ## Syntax
 
 ### Variables declaration.
@@ -143,3 +148,50 @@ int x = 1;
 */
 print(x);
 ```
+
+## Gui
+
+The Gui can run or compile the code. It also shows any semantic or syntax errors.
+
+![Gui screenshot](assets/gui.jpg)
+
+## Quadruples
+
+A list of the language generated quadruples and their description.
+| Quadruple | Description |
+| ------------- | ------------- |
+| PUSH | Push variable or value to the stack |
+| POP | Pop the last element in the stack to a variable |
+| JMP | Unconditional jump to a label |
+| JZ | Jump to label if the last element in the stack is zero |
+| CALL | Call procedure |
+| PROC | Declare a new procedure |
+| RET | Push the result of a procedure to the stack and stop it’s execution |
+
+### Binary operators
+
+These operators work on last two elements in the stack - ARG1, ARG2 - and saves the result on the top of the stack
+
+| Quadruple | Description    |
+| --------- | -------------- |
+| ADD       | ARG1 + ARG2    |
+| SUB       | ARG1 - ARG2    |
+| MUL       | ARG1 \* ARG2   |
+| DIV       | ARG1 / ARG2    |
+| COMP_LT   | ARG1 < ARG2    |
+| COMP_GT   | ARG1 > ARG2    |
+| COMP_LE   | ARG1 <= ARG2   |
+| COMP_GE   | ARG1 >= ARG2   |
+| COMP_NE   | ARG1 != ARG2   |
+| COMP_EQ   | ARG1 == ARG2   |
+| AND       | ARG1 && ARG2   |
+| OR        | ARG1 \|\| ARG2 |
+
+### Unary operators
+
+These operators work on last element in the stack - ARG - and saves the result on the top of the stack
+
+| Quadruple | Description |
+| --------- | ----------- |
+| NOT       | !ARG        |
+| NEG       | -1 \* ARG   |
