@@ -11,7 +11,6 @@ class Symbol
 {
 
 public:
-    int sec = 2;
     virtual SymbolType getType() = 0;
 };
 

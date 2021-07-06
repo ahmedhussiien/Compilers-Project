@@ -7,6 +7,7 @@
 #include "functionParamsNode.h"
 #include "statements/statementsListNode.h"
 
+#include "returnNode.h"
 #include "symbolTable/symbolTable.h"
 #include "enums/dataType.h"
 
@@ -27,6 +28,8 @@ public:
                             FunctionParamsNode *params, Node *statements);
 
     virtual int execute();
+    virtual void semanticCheck();
+    virtual void compile();
 };
 
 #endif

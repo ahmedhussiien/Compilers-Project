@@ -11,8 +11,11 @@ class UnaryOpNode : public ExpressionNode
 
 public:
     UnaryOpNode(UnaryOperator op, ExpressionNode *n);
-    virtual int execute();
 
+    virtual int execute();
+    virtual void compile();
+
+    virtual DataType getType();
     ~UnaryOpNode();
 };
 

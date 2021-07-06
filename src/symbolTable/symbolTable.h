@@ -23,19 +23,18 @@ public:
     bool isDeclared(string identifier);
 
     void declareVariable(string identifier, DataType dataType, int value,
-                         bool isConst = false);
+                         bool isInitialized, bool isConst = false);
 
     void declareFunction(string identifier, DataType returnType,
-                         FunctionParamsNode *params,
-                         Node *statements);
+                         FunctionParamsNode *params, Node *statements);
 
     PrimitiveSymbol *getPrimitiveSymbol(string identifier) const;
-
     FunctionSymbol *getFunctionSymbol(string identifier) const;
-
-    void assignVariableValue(string identifier, DataType type, int value);
-
     int getVariableValue(string identifier) const;
+    DataType getVariableType(string identifier) const;
+
+    void printSymbols() const;
+    void assignVariableValue(string identifier, DataType type, int value = 0);
 };
 
 #endif

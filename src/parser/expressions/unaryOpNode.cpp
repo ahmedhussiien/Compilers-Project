@@ -19,6 +19,30 @@ int UnaryOpNode::execute()
     }
 }
 
+void UnaryOpNode::compile()
+{
+    n->compile();
+
+    switch (op)
+    {
+    case OP_NOT:
+        fprintf(yyout, "NOT\n");
+        break;
+
+    case OP_UMINUS:
+        fprintf(yyout, "NEG\n");
+        break;
+
+    default:
+        return;
+    }
+}
+
+DataType UnaryOpNode::getType()
+{
+    return n->getType();
+}
+
 UnaryOpNode::~UnaryOpNode()
 {
     delete n;

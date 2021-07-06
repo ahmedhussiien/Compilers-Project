@@ -6,8 +6,10 @@ enum DataType
     DTYPE_INT,
     DTYPE_FLOAT,
     DTYPE_BOOL,
-    DTYPE_STRING,
+    DTYPE_CHAR,
     DTYPE_VOID
 };
+
+static const char *DataTypeStr[] = {"int", "float", "bool", "char", "void"};
 
 #endif

@@ -1,6 +1,13 @@
 build
 .vscode
 
+errors.txt
+
 y.tab.c
 y.tab.h
 lex.yy.c
+src/gui/__pycache__
+src/gui/.idea
+src/gui/compiler.exe
+src/gui/interpreter.exe
+src/gui/error.txt

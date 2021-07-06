@@ -20,6 +20,7 @@ public:
     void addCaseStatement(CaseNode *caseNode);
     void setExpression(ExpressionNode *expr);
     virtual int execute();
+    virtual void compile();
 
     ~SwitchCaseNode();
 };

@@ -19,7 +19,8 @@ public:
     ExpressionNode *getArg(int index) const;
 
     virtual int execute();
-
+    int getCount();
+    void compile();
     ~FunctionArgsNode();
 };
 

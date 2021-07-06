@@ -19,6 +19,7 @@ public:
     const vector<DeclarationNode *> &getParams() const;
 
     virtual int execute();
+    virtual void compile();
 
     ~FunctionParamsNode();
 };

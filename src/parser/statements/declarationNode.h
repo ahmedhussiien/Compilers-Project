@@ -35,6 +35,9 @@ public:
     void setExpressionNode(ExpressionNode *exprNode);
 
     virtual int execute();
+    virtual void compile();
+    void compileAsArg();
+    virtual void semanticCheck();
 
     ~DeclarationNode();
 };

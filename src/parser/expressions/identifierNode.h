@@ -15,7 +15,12 @@ class IdentifierNode : public ExpressionNode
 
 public:
     IdentifierNode(SymbolTable *symbolTable, char *name);
+    virtual void semanticCheck();
+
     virtual int execute();
+    virtual void compile();
+
+    virtual DataType getType();
 };
 
 #endif

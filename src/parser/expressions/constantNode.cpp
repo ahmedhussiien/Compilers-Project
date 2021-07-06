@@ -22,14 +22,37 @@ ConstantNode::ConstantNode(float value) : ExpressionNode()
     this->value->value.floatValue = value;
 }
 
-ConstantNode::ConstantNode(char *value) : ExpressionNode()
+ConstantNode::ConstantNode(char value) : ExpressionNode()
 {
     this->value = new PrimitiveValue();
-    this->value->type = DTYPE_STRING;
-    this->value->value.charPtr = value;
+    this->value->type = DTYPE_CHAR;
+    this->value->value.charValue = value;
 }
 
 int ConstantNode::execute()
 {
-    return value->value.intValue;
+    return value->getIntValue();
+}
+
+void ConstantNode::compile()
+{
+    switch (value->type)
+    {
+    case DTYPE_FLOAT:
+        fprintf(yyout, "PUSH %f.3\n", value->value.floatValue);
+        break;
+
+    case DTYPE_CHAR:
+        fprintf(yyout, "PUSH '%c'\n", value->value.charValue);
+        break;
+
+    default:
+        fprintf(yyout, "PUSH %d\n", value->getIntValue());
+        break;
+    }
+}
+
+DataType ConstantNode::getType()
+{
+    return value->type;
 }

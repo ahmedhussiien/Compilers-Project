@@ -1,6 +1,4 @@
-# Yapl-Compiler
-
-yet another programming language
+# Compilers-Project
 
 ## Syntax
 

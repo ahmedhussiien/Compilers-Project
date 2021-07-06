@@ -14,6 +14,7 @@ public:
                     Node *executionStatement);
 
     virtual int execute();
+    virtual void compile();
 
     ~DoWhileLoopNode();
 };

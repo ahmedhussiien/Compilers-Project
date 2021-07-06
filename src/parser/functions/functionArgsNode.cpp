@@ -22,6 +22,19 @@ int FunctionArgsNode::execute()
     return 0;
 }
 
+int FunctionArgsNode::getCount()
+{
+    return args.size();
+}
+
+void FunctionArgsNode::compile()
+{
+    for (ExpressionNode *arg : args)
+    {
+        arg->compile();
+    }
+}
+
 FunctionArgsNode::~FunctionArgsNode()
 {
 }

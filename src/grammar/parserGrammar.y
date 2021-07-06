@@ -7,18 +7,21 @@
 #include "symbolTable/primitiveValue.h"
 #include "parser/parser.h"
 
+#define YYERROR_VERBOSE 1
+
 void execute(Node*);
 int yylex(void);
-void yyerror(std::string);
+void yyerror(const std::string);
 
 SymbolTable symbolTable;
+int labelCounter = 0;
 %}
 
 %union {
     int intValue;
     float floatValue;
     bool boolValue;
-    char* stringValue;
+    char charValue;
 
     char* identifierName;
     DataType datatype; 
@@ -39,7 +42,7 @@ SymbolTable symbolTable;
 
 %token <identifierName>     VARIABLE
 %token <intValue>           INTEGER
-%token <stringValue>        STRING
+%token <charValue>          CHAR
 %token <floatValue>         FLOAT
 %token <boolValue>          BOOL
 
@@ -52,12 +55,12 @@ SymbolTable symbolTable;
 %type <statementListPtr>    stmt_list 
 %type <declarationPtr>      variable_declaration
 
-%type <funcArgsPtr>         function_args
-%type <funcParamsPtr>       function_params
+%type <funcArgsPtr>         function_args function_args_expr
+%type <funcParamsPtr>       function_params function_params_decl
 %type <funcDeclarationPtr>  function_declaration_stmt
 
 // Data types
-%token TYPE_INT TYPE_FLOAT TYPE_STRING TYPE_BOOL TYPE_VOID
+%token TYPE_INT TYPE_FLOAT TYPE_CHAR TYPE_BOOL TYPE_VOID
 %token CONST
 
 // Loops
@@ -79,6 +82,7 @@ SymbolTable symbolTable;
 
 // Standard functions
 %token PRINT
+%token PRINT_SYMBOLS
 
 // Reserved keywords
 %token RETURN
@@ -107,6 +111,7 @@ stmt:
     |   branch_stmt                 { $$ = $1; }
     |   switch_stmt                 { $$ = $1; }
     |   RETURN expr ';'             { $$ = new ReturnNode($2);}
+    |   RETURN ';'                  { $$ = new ReturnNode();}
     |   ';'                         { $$ = new StatementsListNode(); }
     |   '{' '}'                     { $$ = new StatementsListNode(); }
     |   '{' stmt_list '}'           { $$ = $2; }
@@ -154,24 +159,34 @@ function_params:
     /* NULL */ {   
         $$ = new FunctionParamsNode(); 
     } 
-    | variable_declaration {
+    | function_params_decl {
+        $$ = $1;
+    };
+
+function_params_decl:
+    variable_declaration {
         $$ = new FunctionParamsNode();
         $$->addParam($1);
     }
-    | function_params ',' variable_declaration { 
+    | function_params_decl ',' variable_declaration { 
         $$ = $1;
         $$->addParam($3); 
     };
-
+    
 function_args:
     /* NULL */ { 
         $$ = new FunctionArgsNode(); 
     } 
-    | expr { 
+    | function_args_expr { 
+        $$ = $1;
+    };
+
+function_args_expr:
+    expr { 
         $$ = new FunctionArgsNode();
         $$->addArg($1);
     }
-    | function_args ',' expr  { 
+    | function_args_expr ',' expr  { 
         $$ = $1;
         $$->addArg($3);
     };
@@ -203,21 +218,22 @@ expr:
     |   expr EQ expr                    { $$ = new BinaryOpNode(OP_EQ, $1, $3); }
     |   expr AND expr                   { $$ = new BinaryOpNode(OP_AND, $1, $3); }
     |   expr OR expr                    { $$ = new BinaryOpNode(OP_OR, $1, $3); }
-    |   VARIABLE '=' expr               { $$ = new AssignmentNode(&symbolTable, $1, DTYPE_INT, $3); }
+    |   VARIABLE '=' expr               { $$ = new AssignmentNode(&symbolTable, $1, $3); }
     |   VARIABLE '(' function_args ')'  { $$ = new FunctionExecutionNode($1, $3, &symbolTable);}
     |   standard_functions              { $$ = $1; }
     |   '(' expr ')'                    { $$ = $2; }
     ;
 
 standard_functions:
-        PRINT '(' expr ')'      { $$ = new PrintNode($3); }
+        PRINT '(' expr ')'         { $$ = new PrintNode($3); }
+    |   PRINT_SYMBOLS '(' ')'      { $$ = new PrintSymbolsNode(&symbolTable); }
     ;
 
 variable_type:
         TYPE_INT        { $$ = DTYPE_INT ;}
     |   TYPE_FLOAT      { $$ = DTYPE_FLOAT ;}
     |   TYPE_BOOL       { $$ = DTYPE_BOOL ;}
-    |   TYPE_STRING     { $$ = DTYPE_STRING ;}
+    |   TYPE_CHAR     { $$ = DTYPE_CHAR ;}
     |   TYPE_VOID       { $$ = DTYPE_VOID ;}
     ;
 
@@ -225,7 +241,7 @@ value:
         INTEGER      { $$ = new ConstantNode($1); }
     |   FLOAT        { $$ = new ConstantNode($1); }
     |   BOOL         { $$ = new ConstantNode($1); }
-    |   STRING       { $$ = new ConstantNode($1); }
+    |   CHAR       { $$ = new ConstantNode($1); }
     ;
 
 %%

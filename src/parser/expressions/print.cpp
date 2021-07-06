@@ -8,6 +8,17 @@ PrintNode::PrintNode(ExpressionNode *n) : n(n)
 
 int PrintNode::execute()
 {
-    printf("%d\n", n->execute());
+    fprintf(yyout, "%d\n", n->execute());
     return 0;
+}
+
+void PrintNode::compile()
+{
+    n->compile();
+    fprintf(yyout, "CALL print\n");
+}
+
+DataType PrintNode::getType()
+{
+    return DTYPE_INT;
 }

@@ -9,8 +9,10 @@ class ReturnNode : public Node
     ExpressionNode *exprNode;
 
 public:
-    ReturnNode(ExpressionNode *exprNode);
+    ReturnNode(ExpressionNode *exprNode = nullptr);
     virtual int execute();
+    DataType getReturnType();
+    void compile();
     ~ReturnNode();
 };
 
