@@ -3,7 +3,6 @@
 IdentifierNode::IdentifierNode(SymbolTable *symbolTable, char *name)
     : ExpressionNode(), symbolTable(symbolTable), name(name)
 {
-    // semanticCheck();
 }
 
 int IdentifierNode::execute()

@@ -8,7 +8,6 @@ DeclarationNode::DeclarationNode(SymbolTable *symbolTable, char *name,
     : Node(), symbolTable(symbolTable), name(name), type(type),
       isConst(isConst), exprNode(exprNode)
 {
-    // semanticCheck();
     if (exprNode)
     {
         symbolTable->declareVariable(name, type, 0, true, isConst);
@@ -26,7 +25,6 @@ DeclarationNode::DeclarationNode(const DeclarationNode &node)
     isConst = node.isConst;
     exprNode = node.exprNode;
     symbolTable = node.symbolTable;
-    // semanticCheck();
     if (exprNode)
     {
         symbolTable->declareVariable(name, type, 0, true, isConst);
@@ -75,17 +73,6 @@ int DeclarationNode::execute()
         yyerror("Variable type mismatch.");
         return 0;
     }
-
-    // if (exprNode)
-    // {
-    //     symbolTable->declareVariable(name, type, exprNode->execute(), true, isConst);
-    //     return 1;
-    // }
-    // else
-    // {
-    //     symbolTable->declareVariable(name, type, 0, false, isConst);
-    //     return 1;
-    // }
     return 1;
 }
 
@@ -100,12 +87,7 @@ void DeclarationNode::compile()
     if (exprNode)
     {
         exprNode->compile();
-        // symbolTable->declareVariable(name, type, 0, true, isConst);
         fprintf(yyout, "POP %s\n", name.c_str());
-    }
-    else
-    {
-        // symbolTable->declareVariable(name, type, 0, false, isConst);
     }
 }
 

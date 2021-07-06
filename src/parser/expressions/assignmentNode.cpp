@@ -6,7 +6,6 @@ AssignmentNode::AssignmentNode(SymbolTable *symbolTable, char *name,
     : symbolTable(symbolTable), name(name), exprNode(exprNode)
 {
     symbol = symbolTable->getPrimitiveSymbol(name);
-    // semanticCheck();
 }
 
 int AssignmentNode::execute()

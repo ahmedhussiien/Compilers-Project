@@ -14,7 +14,6 @@ FunctionExecutionNode::FunctionExecutionNode(string identifier,
 
 void FunctionExecutionNode::compile()
 {
-    // semanticCheck();
     argsNode->compile();
     fprintf(yyout, "CALL %s\n", identifier.c_str());
 }

@@ -4,7 +4,6 @@
 BinaryOpNode::BinaryOpNode(BinaryOperator op, ExpressionNode *n1, ExpressionNode *n2)
     : ExpressionNode(), op(op), n1(n1), n2(n2)
 {
-    // semanticCheck();
 }
 
 int BinaryOpNode::execute()
